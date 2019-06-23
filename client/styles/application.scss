@@ -1,1 +1,10 @@
 // Top-level scss file. All other files imported here.
+
+.footer {
+  position: absolute;
+  text-align: center;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  bottom: 0;
+}

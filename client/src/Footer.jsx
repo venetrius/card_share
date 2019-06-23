@@ -4,7 +4,12 @@ class Footer extends Component {
 
   render(){
     return (
-      <p>Hello from Footer!</p>
+      <div class="footer">
+        <button type="button">Profile</button>
+        <button type="button">Network</button>
+        <button type="button">Messages</button>
+        <button type="button">Cards</button>
+      </div>
     );
   }
 }
