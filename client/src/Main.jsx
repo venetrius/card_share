@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
+import Network from './main/Network.jsx';
 
 class Main extends Component {
 
   render(){
     return (
-      <p>Hello from Main!</p>
+      <div>
+        <p>Hello from Main!</p>
+        <Network/>
+      </div>
     );
   }
 }
