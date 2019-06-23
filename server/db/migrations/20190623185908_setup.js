@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
 
   .createTable('events', function (table) {
     table.increments('id').primary()
-    table.string('event-code',255).notNullable().unique()
+    table.string('event_code',255).notNullable().unique()
     table.string('name', 255).notNullable()
     table.string('description', 1023).notNullable()
     table.string('city', 255).notNullable()
