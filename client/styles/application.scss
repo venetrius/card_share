@@ -1,1 +1,13 @@
 // Top-level scss file. All other files imported here.
+#tab-bar.demo {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0;
+}
+#tab-bar .demoName {
+  height: 40px;
+}
+#tab-bar .demo-preview-item .am-tab-bar {
+  background-color: white;
+}
