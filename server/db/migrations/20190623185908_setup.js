@@ -27,6 +27,20 @@ exports.up = function(knex, Promise) {
     table.timestamp('created_at').defaultTo(knex.fn.now())
   })
 
+  .createTable('attendees', function (table) {
+    table.increments('id').primary()
+    table.integer('user_id')
+    table.foreign('user_id').references('users.id').onDelete('CASCADE')
+    table.string('email_address', 255).unique().notNullable()
+    table.string('first_name', 255).notNullable()
+    table.string('last_name', 255)
+    table.string('position', 255)
+    table.string('company', 255)
+    table.string('linkedin-link', 255).notNullable()
+    table.string('tagline ', 255)
+    table.timestamp('created_at').defaultTo(knex.fn.now())
+  })
+
   .createTable('organizers', function (table) {
     table.increments('id').primary()
     table.integer('user_id')
