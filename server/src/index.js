@@ -6,6 +6,8 @@ const http          = require('http').Server(app);
 const io            = require('socket.io')(http);
                       require('dotenv').config();
 const PORT          = process.env.PORT || 8000;
+const dataHelpers   = require('./util/data_helpers/data-helpers');
+
 
 
 app.get('/', function(req, res){
