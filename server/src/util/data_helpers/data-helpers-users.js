@@ -13,6 +13,19 @@ module.exports = function(knex){
     );
   }
 
+  function getUserByToken(token, cb) {
+    knex.select('*').from('users')
+      .where('token', token)
+      .asCallback(function(err, users) 
+      {
+        if (err) {
+          throw err;
+        }
+        cb(null, users)
+      }
+    );
+  }
+
   function createUser(data, cb) {
     knex('users')
     .insert(data)
@@ -28,6 +41,7 @@ module.exports = function(knex){
 
   return {
     getUserById,
-    createUser
+    createUser,
+    getUserByToken
   }  
 }
