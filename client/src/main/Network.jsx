@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Card from './Card.jsx';
 
 class Network extends Component {
 
@@ -6,6 +7,7 @@ class Network extends Component {
     return (
       <div>
         Hello from the Network!!
+        < Card />
       </div>
     );
   }

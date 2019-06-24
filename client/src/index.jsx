@@ -2,7 +2,7 @@
 
 // Load up the application styles
 
-require('../styles/application.scss');
+// require('../styles/application.scss');
 
 // Render the top-level React component
 // import 'bootstrap/dist/css/bootstrap.min.css';
