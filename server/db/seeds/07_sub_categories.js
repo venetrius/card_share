@@ -15,9 +15,9 @@ exports.seed = function(knex, Promise) {
           {id: 1000006, category_id: 1000002,  name:'Bread'},
           {id: 1000007, category_id: 1000002,  name:'Pasta'},
           {id: 1000008, category_id: 1000002,  name:'Bagel'},
-          {id: 1000010, category_id: 1000002,  name:'Cake'},
-          {id: 1000011, category_id: 1000002,  name:'Chicke'},
-          {id: 1000012, category_id: 1000002,  name:'GummyBear'},
+          {id: 1000009, category_id: 1000002,  name:'Cake'},
+          {id: 1000010, category_id: 1000002,  name:'Chicke'},
+          {id: 1000011, category_id: 1000002,  name:'GummyBear'},
 
           {id: 1000012, category_id: 1000003,  name:'CSS'},
           {id: 1000013, category_id: 1000003,  name:'Responsive design'},
@@ -33,10 +33,10 @@ exports.seed = function(knex, Promise) {
           {id: 1000021, category_id: 1000004,  name:'Positive Attitude'},
 
           {id: 1000022, category_id: 1000001,  name:'Automated testing'},
-          {id: 1000022, category_id: 1000001,  name:'Continous development'},
-          {id: 1000022, category_id: 1000001,  name:'Dockers'},
-          {id: 1000022, category_id: 1000001,  name:'Kebernetees'},
-          {id: 1000022, category_id: 1000001,  name:'Other magic word'}
+          {id: 1000023, category_id: 1000001,  name:'Continous development'},
+          {id: 1000024, category_id: 1000001,  name:'Dockers'},
+          {id: 1000025, category_id: 1000001,  name:'Kebernetees'},
+          {id: 1000026, category_id: 1000001,  name:'Other magic word'}
           
         ]);
       });

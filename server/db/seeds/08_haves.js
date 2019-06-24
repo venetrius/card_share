@@ -19,12 +19,12 @@ exports.seed = function(knex, Promise) {
           {id: 1000011, user_id: 1000002,  sub_category_id: 1000018},
           {id: 1000012, user_id: 1000002,  sub_category_id: 1000019},
 
-          {id: 1000012, user_id: 1000003,  sub_category_id: 1000001},
           {id: 1000013, user_id: 1000003,  sub_category_id: 1000008},
           {id: 1000014, user_id: 1000003,  sub_category_id: 1000010},
           {id: 1000015, user_id: 1000003,  sub_category_id: 1000016},
           {id: 1000016, user_id: 1000003,  sub_category_id: 1000019},
-          {id: 1000017, user_id: 1000003,  sub_category_id: 1000023},          
+          {id: 1000017, user_id: 1000003,  sub_category_id: 1000023},
+          
         ]);
       });
   };
