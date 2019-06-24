@@ -1,6 +1,16 @@
 const passport = require('passport');
 const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-require('dotenv').config();
+require('dotenv').config(); 
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => 
+  {
+    dataHelpers.getUserById(id, (user) => done(null, user))
+  } 
+);
 
 const createUserProfile = function(profile){
     const userProfile = {
@@ -26,6 +36,7 @@ const setUpLinkedinPassport = function (dataHelpers) {
         profile.id,
         function (error, user) {
           if (user) {
+            done(null, user);
             console.log('user already exist')
           } else {
             const userProfile = createUserProfile(profile);
@@ -34,6 +45,7 @@ const setUpLinkedinPassport = function (dataHelpers) {
               function (err, user) {
                 console.log('err', err);
                 console.log('user', user);
+                done(null, user);
               }
             );
           }

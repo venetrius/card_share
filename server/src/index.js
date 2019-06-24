@@ -37,7 +37,6 @@ io.on('connection', function(socket){
       }
       socket.emit('message', message);
     });
-    //io.emit('hello', 'can you hear me?', 1, 2, 'abc' + id);
   }
 );
 });
