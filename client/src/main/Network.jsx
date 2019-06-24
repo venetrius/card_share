@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import Card from './Card.jsx';
+import BusinessCard from './BusinessCard.jsx';
+import CardDeck from 'react-bootstrap/CardDeck'
 
 class Network extends Component {
 
@@ -7,7 +8,11 @@ class Network extends Component {
     return (
       <div>
         Hello from the Network!!
-        < Card />
+        <CardDeck>
+          <BusinessCard/>
+          <BusinessCard/>
+          <BusinessCard/>
+        </CardDeck>
       </div>
     );
   }
