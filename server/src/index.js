@@ -15,6 +15,7 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
+  console.log('connected');
   socket.on('get_user', function(id)
   {
     dataHelpers.getUserById(id,function(err, profile){
@@ -24,7 +25,7 @@ io.on('connection', function(socket){
       }else{
         message = JSON.stringify(profile);
       }
-      io.emit('message', message);
+      socket.emit('message', message);
     });
     //io.emit('hello', 'can you hear me?', 1, 2, 'abc' + id);
   }

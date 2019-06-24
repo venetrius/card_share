@@ -11,6 +11,7 @@ class App extends Component {
     this.state = {
       endpoint: "http://127.0.0.1:8000"
     };
+    this.connection = null;
   }
 
   sendAlert(msg){
@@ -18,17 +19,25 @@ class App extends Component {
   }
   
   componentDidMount() {
+    this.connect();
+  }
+
+  connect(){
     const App = this;
-    const { endpoint } = this.state;
-    let socket = socketIOClient(this.state.endpoint);
-    socket.on('chat message', function(msg){
+    this.connection = socketIOClient(this.state.endpoint);
+    this.connection.on('message', function(msg){
       App.sendAlert(msg);
     });
+  }
+
+  getUser(){
+    this.connection.emit('get_user','1000001');
   }
 
   render(){
     return (
       <div>
+        <button onClick={() => this.getUser() } > User details </button>
         <Header/>
         <Main/>
         <Footer/>
