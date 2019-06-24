@@ -5,17 +5,18 @@ const app           = require('express')();
 const http          = require('http').Server(app);
 const io            = require('socket.io')(http);
                       require('dotenv').config();
-const PORT          = process.env.PORT || 8000;
+const PORT          = process.env.PORT || 8081;
 const dataHelpers   = require('./util/data_helpers/data-helpers');
+const authRoutes = require('./routes/auth-routes');
+const passportSetup = require('./config/passport-setup');
 
-
+app.use('/auth', authRoutes);
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function(socket){
-  console.log('connected');
   socket.on('get_user', function(id)
   {
     dataHelpers.getUserById(id,function(err, profile){
