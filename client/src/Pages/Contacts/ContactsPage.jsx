@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import BusinessCard from './BusinessCard.jsx';
+import BusinessCard from '../../Common/BusinessCard.jsx';
 import CardDeck from 'react-bootstrap/CardDeck'
 
-class Network extends Component {
+class ContactsPage extends Component {
 
   render(){
     return (
       <div>
-        Hello from the Network!!
+        Hello from the ContactsPage!!
         <CardDeck>
           <BusinessCard/>
           <BusinessCard/>
@@ -18,4 +18,4 @@ class Network extends Component {
   }
 }
 
-export default Network;
+export default ContactsPage;
