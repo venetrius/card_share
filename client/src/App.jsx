@@ -9,7 +9,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      endpoint: "http://127.0.0.1:8000"
+      endpoint: "http://127.0.0.1:8081"
     };
     this.connection = null;
   }
