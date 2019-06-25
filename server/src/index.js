@@ -13,6 +13,7 @@ const passportSetup = require('./config/passport-setup')(dataHelpers);
 
 const authRoutes    = require('./routes/auth-routes');
 const profileRoutes = require('./routes/profile-routes');
+const eventHandlers = require('./socket/events');
 
 
 app.use(cookieSession({
@@ -31,33 +32,12 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+
 io.on('connection', function(socket){
-
-  socket.on('get_user', function(id)
-  {
-    dataHelpers.getCategories(id,function(err, profile){
-      let message;
-      if(err){
-        message = 'error please try again later';
-      }else{
-        message = JSON.stringify(profile);
-      }
-      socket.emit('message', message);
-    });
+  for (var key in eventHandlers) {
+    socket.on(key, eventHandlers[key]);
   }
-);
 });
-
-dataHelpers.getAttendees(1000001,function(err, list){
-  let message;
-  if(err){
-    message = 'error please try again later';
-  }else{
-    message = JSON.stringify(list);
-  }
-  console.log(message);
-});
-
 
 const server = http.listen(PORT, () => {
   console.log("Server is listening on port " + (PORT));
