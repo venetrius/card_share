@@ -36,9 +36,10 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   model.register(socket.handshake.session.id, socket.id);
-  console.log(model)
-  socket.on('get_user', function(id){
-    dataHelpers.getUserById(id,function(err, profile){
+
+  socket.on('get_user', function(id)
+  {
+    dataHelpers.getCategories(id,function(err, profile){
       let message;
       if(err){
         message = 'error please try again later';
@@ -49,11 +50,21 @@ io.on('connection', function(socket){
     });
   });
   socket.on('disconnect', function () {
-    console.log('Got disconnect!');
     model.deleteConnection(socket.id);
   })
 
 });
+
+dataHelpers.getAttendees(1000001,function(err, list){
+  let message;
+  if(err){
+    message = 'error please try again later';
+  }else{
+    message = JSON.stringify(list);
+  }
+  console.log(message);
+});
+
 
 const server = http.listen(PORT, () => {
   console.log("Server is listening on port " + (PORT));

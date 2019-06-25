@@ -31,6 +31,8 @@ class App extends Component {
     this.connection = socketIOClient(this.state.endpoint);
     this.connection.on('message', function(msg){
       App.sendAlert(msg);
+      msg=JSON.parse(msg)
+      App.setState({categories: msg.categories, subCategories: msg.subCategories});
     });
     console.log(App.connection);
   }
@@ -43,8 +45,10 @@ class App extends Component {
     this.setState({ modalShow: true })
   }
 
+
   render(){
     let modalClose = () => this.setState({ modalShow: false });
+    console.log(this.state.categories)
     return (
       <div>
         <Header showNotifications={this.showNotifications}/>
@@ -53,7 +57,7 @@ class App extends Component {
           show={this.state.modalShow}
           onHide={modalClose}
         />
-        <Main/>
+        <Main categories={this.state.categories} subCategories={this.state.subCategories}/>
         <Footer/>
       </div>
     );
