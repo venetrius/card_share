@@ -56,8 +56,6 @@ class App extends Component {
           show={this.state.modalShow}
           onHide={modalClose}
         />
-        <Main/>
-        <Header/>
         <Main categories={this.state.categories} subCategories={this.state.subCategories}/>
         <Footer/>
       </div>
