@@ -45,7 +45,6 @@ const setUpLinkedinPassport = function (dataHelpersParam) {
             dataHelpers.createUser(
               userProfile,
               function (err, user) {
-                console.log('err', err);
                 console.log('user', user);
                 done(null, user);
               }
@@ -53,8 +52,6 @@ const setUpLinkedinPassport = function (dataHelpersParam) {
           }
         }
       )
-      console.log('passport callback function fired:');
-      console.log(profile);
     })
   );
 }
