@@ -1,19 +1,32 @@
 const passport = require('passport');
 const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-require('dotenv').config();
+require('dotenv').config(); 
+
+let dataHelpers = null;
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => 
+  {
+    dataHelpers.getUserById(id, (user) => done(null, user))
+  } 
+);
 
 const createUserProfile = function(profile){
     const userProfile = {
         token : profile.id,
         first_name: profile.name.givenName,
-        last_name:'Dral',
+        last_name: profile.name.familyName,
         email_address:'drum@gmail.com',
         'linkedin-link':'https://www.linkedin.com'
     }
     return userProfile;
 }
 
-const setUpLinkedinPassport = function (dataHelpers) {
+const setUpLinkedinPassport = function (dataHelpersParam) {
+  dataHelpers = dataHelpersParam;
   passport.use(
     new LinkedInStrategy({
       // options for google strategy
@@ -26,21 +39,19 @@ const setUpLinkedinPassport = function (dataHelpers) {
         profile.id,
         function (error, user) {
           if (user) {
-            console.log('user already exist')
+            done(null, user);
           } else {
             const userProfile = createUserProfile(profile);
             dataHelpers.createUser(
               userProfile,
               function (err, user) {
-                console.log('err', err);
                 console.log('user', user);
+                done(null, user);
               }
             );
           }
         }
       )
-      console.log('passport callback function fired:');
-      console.log(profile);
     })
   );
 }
