@@ -17,4 +17,3 @@ ReactDOM.render((
   </BrowserRouter>
 ), document.getElementById('react-root'));
 
-// ReactDOM.render(<App/>, document.getElementById('react-root'));
