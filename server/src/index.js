@@ -13,12 +13,15 @@ const passportSetup = require('./config/passport-setup')(dataHelpers);
 
 const authRoutes    = require('./routes/auth-routes');
 const profileRoutes = require('./routes/profile-routes');
-
-
-app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000,
-  keys: [process.env.COOKIE_KEY]
-}));
+const sharedsession = require("express-socket.io-session");
+const session       = cookieSession({
+                        maxAge: 24 * 60 * 60 * 1000,
+                        keys: [process.env.COOKIE_KEY]
+                      })
+const model         = require('./model/model');
+console.log('model', model);
+app.use(session);
+io.use(sharedsession(session, {autoSave: true}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -32,9 +35,9 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-
-  socket.on('get_user', function(id)
-  {
+  model.register(socket.handshake.session.id, socket.id);
+  console.log(model)
+  socket.on('get_user', function(id){
     dataHelpers.getUserById(id,function(err, profile){
       let message;
       if(err){
@@ -44,8 +47,12 @@ io.on('connection', function(socket){
       }
       socket.emit('message', message);
     });
-  }
-);
+  });
+  socket.on('disconnect', function () {
+    console.log('Got disconnect!');
+    model.deleteConnection(socket.id);
+  })
+
 });
 
 const server = http.listen(PORT, () => {
