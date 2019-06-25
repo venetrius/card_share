@@ -29,16 +29,23 @@ class App extends Component {
   connect(){
     const App = this;
     this.connection = socketIOClient(this.state.endpoint);
-    this.connection.on('message', function(msg){
+    this.connection.on('user', function(msg){
+      App.sendAlert(msg);
+      msg=JSON.parse(msg)
+    });
+    this.connection.on('categories', function(msg){
       App.sendAlert(msg);
       msg=JSON.parse(msg)
       App.setState({categories: msg.categories, subCategories: msg.subCategories});
     });
-    console.log(App.connection);
   }
 
   getUser(){
     this.connection.emit('get_user','1000001');
+  }
+
+  getCategories(){
+    this.connection.emit('get_categories','1000001');
   }
 
   showNotifications(){
@@ -53,6 +60,7 @@ class App extends Component {
       <div>
         <Header showNotifications={this.showNotifications}/>
         <button onClick={() => this.getUser() } > User details </button>
+        <button onClick={() => this.getCategories() } > Categories </button>
         <Notifications
           show={this.state.modalShow}
           onHide={modalClose}
