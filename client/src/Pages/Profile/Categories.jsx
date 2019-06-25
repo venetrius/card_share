@@ -34,16 +34,19 @@ class Categories extends Component {
     return (
       <React.Fragment>
         {categories.map(category => (
-          <h4>{category.name}</h4>
-                   
+          <div onClick={() => this.toggleTab(category.id)}>
+            <h4>{category.name}</h4>
+            {this.state.openTab === category.id ? (
+              <StyledUL>
+                {subCategories
+                  .filter(subCategory => subCategory.category_id === category.id)
+                  .map(subCategory => (
+                    <p>{subCategory.name}</p>
+                  ))}
+              </StyledUL>
+            ) : null}
+          </div>
         ))}
-        <h4>subCategories</h4>
-        <div>
-        {subCategories
-          .map(subCategory => (
-            <li>{subCategory.name}</li>
-          ))}
-        </div>
       </React.Fragment>
     );
   }
