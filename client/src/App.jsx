@@ -45,8 +45,8 @@ class App extends Component {
     let modalClose = () => this.setState({ modalShow: false });
     return (
       <div>
-        <button onClick={() => this.getUser() } > User details </button>
         <Header showNotifications={this.showNotifications}/>
+        <button onClick={() => this.getUser() } > User details </button>
         <Notifications
           show={this.state.modalShow}
           onHide={modalClose}

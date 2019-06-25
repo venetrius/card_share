@@ -7,7 +7,7 @@ class Footer extends Component {
 
   render(){
     return (
-      <Navbar bg="light" variant="light">
+      <Navbar sticky="bottom" bg="light" variant="light">
         <Nav className="mr-auto">
           <LinkContainer to="/profile">
             <NavItem><i className="fa fa-user"></i>Profile</NavItem>

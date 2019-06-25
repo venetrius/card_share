@@ -1,24 +1,20 @@
 import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button'
+import { Navbar} from 'react-bootstrap';
 
 class Header extends Component {
 
   render(){
     return (
-      <div>
-      <p>Hello from Header!</p>
+      <Navbar bg="light" sticky="top">
+        <p>Event Title</p>
         <Button>
             Login
         </Button>
-        <Button onClick={this.props.showNotifications}>
-          <i className="far fa-bell"></i>
-        </Button>
-
-        <span className="fa-stack fa-2x has-badge" data-count="22">
-          <i className="fa fa-circle fa-stack-2x"></i>
-          <i className="far fa-bell fa-stack-1x fa-inverse"></i>
+        <span onClick={this.props.showNotifications} id="notification-button" className="fa-stack fa-2x has-badge" data-count="4">
+          <i className="fa fa-bell fa-stack-1x xfa-inverse" data-count="4b"></i>
         </span>
-      </div>
+      </Navbar>
     );
   }
 }
