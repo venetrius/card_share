@@ -28,3 +28,10 @@ class Footer extends Component {
 }
 
 export default Footer;
+
+{/* <div className="navbar">
+<a className="active" href="/profile"><i className="fa fa-user"></i> Profile</a> 
+<a href="/network"><i className="fa fa-share-alt-square"></i> Network</a> 
+<a href="/messages"><i className="fa fa-fw fa-envelope"></i> Messages</a> 
+<a href="/contacts"><i className="fa fa-fw fa-folder"></i> Contacts</a>
+</div> */}

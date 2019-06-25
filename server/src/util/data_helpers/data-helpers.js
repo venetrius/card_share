@@ -12,6 +12,7 @@ const knex = require('knex')({
     }
 });
 
+const category_helpers = require('./data-helpers-categories')(knex);
 const user_helpers = require('./data-helpers-users')(knex);
-let dataHelpers = user_helpers;
+let dataHelpers = Object.assign(user_helpers, category_helpers);
 module.exports = dataHelpers;
