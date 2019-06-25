@@ -45,6 +45,7 @@ class App extends Component {
     this.setState({ modalShow: true })
   }
 
+
   render(){
     let modalClose = () => this.setState({ modalShow: false });
     console.log(this.state.categories)

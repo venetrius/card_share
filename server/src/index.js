@@ -35,7 +35,6 @@ io.on('connection', function(socket){
 
   socket.on('get_user', function(id)
   {
-
     dataHelpers.getCategories(id,function(err, profile){
       let message;
       if(err){
@@ -43,12 +42,22 @@ io.on('connection', function(socket){
       }else{
         message = JSON.stringify(profile);
       }
-      console.log(message);
       socket.emit('message', message);
     });
   }
 );
 });
+
+dataHelpers.getAttendees(1000001,function(err, list){
+  let message;
+  if(err){
+    message = 'error please try again later';
+  }else{
+    message = JSON.stringify(list);
+  }
+  console.log(message);
+});
+
 
 const server = http.listen(PORT, () => {
   console.log("Server is listening on port " + (PORT));
