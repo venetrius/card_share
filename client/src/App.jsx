@@ -10,10 +10,11 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      endpoint: "http://127.0.0.1:8081"
+      endpoint: "http://127.0.0.1:8081",
+      modalShow: false
     };
     this.connection = null;
-    this.state = { modalShow: false };
+
     this.showNotifications=this.showNotifications.bind(this)
   }
 
@@ -31,6 +32,7 @@ class App extends Component {
     this.connection.on('message', function(msg){
       App.sendAlert(msg);
     });
+    console.log(App.connection);
   }
 
   getUser(){
