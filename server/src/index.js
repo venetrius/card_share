@@ -28,13 +28,15 @@ dataHelpers.createUser(
 io.on('connection', function(socket){
   socket.on('get_user', function(id)
   {
-    dataHelpers.getUserById(id,function(err, profile){
+
+    dataHelpers.getCategories(id,function(err, profile){
       let message;
       if(err){
         message = 'error please try again later';
       }else{
         message = JSON.stringify(profile);
       }
+      console.log(message);
       socket.emit('message', message);
     });
     //io.emit('hello', 'can you hear me?', 1, 2, 'abc' + id);

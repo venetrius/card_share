@@ -27,6 +27,8 @@ class App extends Component {
     this.connection = socketIOClient(this.state.endpoint);
     this.connection.on('message', function(msg){
       App.sendAlert(msg);
+      msg=JSON.parse(msg)
+      App.setState({categories: msg.categories, subCategories: msg.subCategories});
     });
   }
 
@@ -35,11 +37,12 @@ class App extends Component {
   }
 
   render(){
+    console.log(this.state.categories)
     return (
       <div>
         <button onClick={() => this.getUser() } > User details </button>
         <Header/>
-        <Main/>
+        <Main categories={this.state.categories} subCategories={this.state.subCategories}/>
         <Footer/>
       </div>
     );
