@@ -30,17 +30,9 @@ app.use('/profile', profileRoutes);
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
-/* example create user 
-dataHelpers.createUser(
-  {token : "f43vr432405", first_name: 'Dri',   last_name:'Dral', email_address:'drum@gmail.com', 'linkedin-link':'https://www.linkedin.com'},
-  function(err, user){
-    console.log('err', err);
-    console.log('user',user);
-  }
-)
-*/
 
 io.on('connection', function(socket){
+
   socket.on('get_user', function(id)
   {
     dataHelpers.getUserById(id,function(err, profile){

@@ -18,7 +18,7 @@ const createUserProfile = function(profile){
     const userProfile = {
         token : profile.id,
         first_name: profile.name.givenName,
-        last_name:'Dral',
+        last_name: profile.name.familyName,
         email_address:'drum@gmail.com',
         'linkedin-link':'https://www.linkedin.com'
     }

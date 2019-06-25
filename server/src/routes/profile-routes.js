@@ -3,15 +3,15 @@ const passport = require('passport');
 
 
 const authCheck = (req, res, next) => {
-    if(!req.user){
-        res.send(req.user) //redirect('/auth/linkedin');
+    if(!req.session || !req.session.id){
+      res.redirect('/auth/linkedin');
     } else {
-        next();
+      next();
     }
 };
 
 router.get('/', authCheck, (req, res) => {
-    res.send('you are logged in, this is your profile - ' + req.user.username);
+  res.send('you are logged in, this is your profile - ' + req.session.first_name);
 });
 
 module.exports = router;
