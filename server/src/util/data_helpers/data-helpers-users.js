@@ -21,7 +21,7 @@ module.exports = function(knex){
         if (err) {
           throw err;
         }
-        cb(null, users)
+        cb(null, users[0])
       }
     );
   }
