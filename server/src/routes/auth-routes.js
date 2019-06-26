@@ -20,9 +20,7 @@ router.get('/linkedin', addSocketIdtoSession, passport.authenticate('linkedin', 
 router.get('/linkedin/callback', passport.authenticate('linkedin', { session: true }), (req, res) => {
   const io = req.app.get('io')
   req.session.user.id = req.user.id;
-  console.log('socketId', req.session.socketId) 
-
-  io.in(req.session.socketId).emit('message', JSON.stringify(req.user));
+  io.in(req.session.socketId).emit('user', JSON.stringify(req.user));
   res.send(onSucsess);
 });
 
