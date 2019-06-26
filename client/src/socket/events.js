@@ -6,6 +6,12 @@ function eventHandlers(App) {
       msg=JSON.parse(msg);
       App.setState({user : msg})
     },
+
+    attendees : function(msg){
+      App.sendAlert(msg);
+      msg=JSON.parse(msg);
+      App.setState({attendees : msg})
+    },
     
     categories : function(msg){
       App.sendAlert(msg);

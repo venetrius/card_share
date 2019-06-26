@@ -48,6 +48,10 @@ class App extends Component {
     this.state.connection.emit('get_categories','1000001');
   }
 
+  getAttendees(){
+    this.state.connection.emit('get_attendees','1000001');
+  }
+  
   logOut(){
     this.state.connection.emit('log_out','');
   }
@@ -64,7 +68,8 @@ class App extends Component {
         <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()}/>
         <button onClick={() => this.getUser() } > User details </button>
         <button onClick={() => this.getCategories() } > Categories </button>
-        <button onClick={() => this.connectWith('1000002') } > Connect </button>
+        <button onClick={() => this.getAttendees() } > Attendees </button>
+        <button onClick={() => this.connectWith() } > Connect </button>
         <Notifications
           show={this.state.modalShow}
           onHide={modalClose}
