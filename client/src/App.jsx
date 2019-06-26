@@ -3,7 +3,7 @@ import socketIOClient from "socket.io-client";
 import Footer from './Common/Footer.jsx';
 import Header from './Common/Header.jsx';
 import Main from './Main.jsx';
-import Notifications from './Common/Notifications.jsx'
+import Notifications from './Common/Notifications.jsx';
 
 class App extends Component {
   constructor() {
@@ -28,19 +28,25 @@ class App extends Component {
   connect(){
     const App = this;
     let connection = socketIOClient(this.state.endpoint);
-    connection.on('message', function(msg){
-      App.sendAlert(msg);
-      msg=JSON.parse(msg)
-      App.setState({categories: msg.categories, subCategories: msg.subCategories});
-    });
+    // Import and assign socket event handlers
+    const eventHandlers = require('./socket/events')(App);
+    for (var key in eventHandlers) {
+      connection.on(key, eventHandlers[key]);
+    }
     this.setState({connection : connection});
-    console.log(App.state.connection);
   }
 
   getUser(){
     this.state.connection.emit('get_user','1000001');
   }
 
+  connectWith(user_id){
+    this.connection.emit('request_connection',user_id);
+  }
+
+  getCategories(){
+    this.connection.emit('get_categories','1000001');
+  }
 
   showNotifications(){
     this.setState({ modalShow: true })
@@ -53,6 +59,8 @@ class App extends Component {
       <div>
         <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user}/>
         <button onClick={() => this.getUser() } > User details </button>
+        <button onClick={() => this.getCategories() } > Categories </button>
+        <button onClick={() => this.connectWith('1000002') } > Connect </button>
         <Notifications
           show={this.state.modalShow}
           onHide={modalClose}

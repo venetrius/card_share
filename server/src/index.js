@@ -10,7 +10,7 @@ const PORT          = process.env.PORT || 8081;
 const dataHelpers   = require('./util/data_helpers/data-helpers');
 const passport      = require('passport');
 const passportSetup = require('./config/passport-setup')(dataHelpers);
-
+const eventHandlers = require('./socket/events');
 const authRoutes    = require('./routes/auth-routes');
 const profileRoutes = require('./routes/profile-routes');
 const sharedsession = require("express-socket.io-session");
@@ -35,37 +35,16 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+
 io.on('connection', function(socket){
   model.register(socket.handshake.session.id, socket.id);
-
-  socket.on('get_user', function(id)
-  {
-    dataHelpers.getCategories(id,function(err, profile){
-      let message;
-      if(err){
-        message = 'error please try again later';
-      }else{
-        message = JSON.stringify(profile);
-      }
-      socket.emit('message', message);
-    });
-  });
+  for (var key in eventHandlers) {
+    socket.on(key, eventHandlers[key]);
+  }
   socket.on('disconnect', function () {
     model.deleteConnection(socket.id);
   })
-
 });
-
-dataHelpers.getAttendees(1000001,function(err, list){
-  let message;
-  if(err){
-    message = 'error please try again later';
-  }else{
-    message = JSON.stringify(list);
-  }
-  console.log(message);
-});
-
 
 const server = http.listen(PORT, () => {
   console.log("Server is listening on port " + (PORT));
