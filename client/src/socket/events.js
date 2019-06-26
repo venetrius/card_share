@@ -4,6 +4,7 @@ function eventHandlers(App) {
     user : function(msg){
       App.sendAlert(msg);
       msg=JSON.parse(msg);
+      App.setState({user : msg})
     },
     
     categories : function(msg){

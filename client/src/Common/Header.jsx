@@ -7,7 +7,11 @@ import OAuth from './Oauth.jsx'
 class Header extends Component {
 
   getOauth(){
-    if (this.props.socket){
+    console.log('header props', this.props)
+    if(this.props.user){
+      return (<Button onClick={this.props.logOut}> LogOut </Button>)
+    }
+    else if (this.props.socket){
       return (
         <OAuth
         provider='linkedin'

@@ -41,11 +41,15 @@ class App extends Component {
   }
 
   connectWith(user_id){
-    this.connection.emit('request_connection',user_id);
+    this.state.connection.emit('request_connection',user_id);
   }
 
   getCategories(){
-    this.connection.emit('get_categories','1000001');
+    this.state.connection.emit('get_categories','1000001');
+  }
+
+  logOut(){
+    this.state.connection.emit('log_out','');
   }
 
   showNotifications(){
@@ -57,7 +61,7 @@ class App extends Component {
     console.log(this.state.categories)
     return (
       <div>
-        <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user}/>
+        <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()}/>
         <button onClick={() => this.getUser() } > User details </button>
         <button onClick={() => this.getCategories() } > Categories </button>
         <button onClick={() => this.connectWith('1000002') } > Connect </button>
