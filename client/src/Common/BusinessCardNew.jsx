@@ -17,7 +17,7 @@ class BusinessCard extends Component {
         <Card.Body>
 
           <Card.Text>
-            This is my tagline!!
+            {this.props.tagline}
           </Card.Text>
 
         </Card.Body>
