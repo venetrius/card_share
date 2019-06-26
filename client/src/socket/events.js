@@ -9,6 +9,7 @@ function eventHandlers(App) {
 
     attendees : function(msg){
       App.sendAlert(msg);
+      console.log(msg);
       msg=JSON.parse(msg);
       App.setState({attendees : msg})
     },
