@@ -59,10 +59,25 @@ const request_connection = function(message){
   })
 };
 
-const accept_connection = function(user_id){
+const accept_connection = function(incoming_message){
   const socket = this;
-  const client_id = socket.id
-  console.log(`${client_id} accepted a connection with ${user_id}`)
+  const {requester_id, responder_id} =  incoming_message;
+  dataHelpers.changeConnectionStatus(requester_id, responder_id, 'CONNECTED', function(err, list){
+    let message;
+    if(err){
+      console.log(err);
+      message = {error : 'error please try again later'};
+    }else{
+      if(!list || list.length == 0){
+        message = {error : 'There is no pending connection between the client and ' + requester_id};
+      }
+      else{
+        console.log('else', list)
+        message = list;
+      }
+    }
+    socket.emit('connection_change', JSON.stringify(message));
+  })
 };
 
 const ignore_connection = function(user_id){

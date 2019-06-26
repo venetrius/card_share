@@ -54,9 +54,13 @@ class App extends Component {
   }
 
   requestConnection(){
-    this.state.connection.emit('request_connection',{requester_id : 1000001, responder_id : 1000003});
+    this.state.connection.emit('request_connection',{requester_id : 100001, responder_id : 1000003});
   }
   
+  acceptConnection(){
+    this.state.connection.emit('accept_connection',{requester_id : 1000001, responder_id : 1000003});
+  }
+
   logOut(){
     this.state.connection.emit('log_out','');
   }
@@ -75,6 +79,8 @@ class App extends Component {
         <button onClick={() => this.getCategories() } > Categories </button>
         <button onClick={() => this.getAttendees() } > Attendees </button>
         <button onClick={() => this.requestConnection() } > Connect </button>
+        <button onClick={() => this.acceptConnection() } > AcceptConnection </button>
+
         <Notifications
           show={this.state.modalShow}
           onHide={modalClose}

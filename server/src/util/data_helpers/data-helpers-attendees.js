@@ -48,8 +48,18 @@ module.exports = function(knex){
 
   function createConnection(requester_id, responder_id, cb) {
     knex('connections')
-    .insert([{requester_id : requester_id, responder_id : responder_id, event_id:           1000001,  status:'SENT'}])
-    .returning('id')
+    .insert([{requester_id : requester_id, responder_id : responder_id, event_id: 1000001,  status:'SENT'}])
+    .returning('*')
+    .asCallback(cb);
+  }
+
+  function changeConnectionStatus(requester_id, responder_id, status, cb){
+    knex('connections')
+    .where('requester_id', requester_id)
+    .andWhere('responder_id', responder_id)
+    .andWhere('status', "SENT")
+    .update({status})
+    .returning('*')
     .asCallback(cb);
   }
 
@@ -72,7 +82,8 @@ module.exports = function(knex){
     getAttendees,
     getConnection,
     createConnection,
-    createConnectionIfNotExist
+    createConnectionIfNotExist,
+    changeConnectionStatus
   }  
 }
 
