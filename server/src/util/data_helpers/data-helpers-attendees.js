@@ -1,7 +1,5 @@
 module.exports = function(knex){
-
   function getAttendees(event_id, cb) {
-    return{}
     knex.select('*').from('attendees')
       .asCallback(function(err, attendees) 
       {

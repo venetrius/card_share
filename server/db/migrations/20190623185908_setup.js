@@ -52,9 +52,9 @@ exports.up = function(knex, Promise) {
   .createTable('card_shares', function (table) {
     table.increments('id').primary()
     table.integer('sender_id')
-    table.foreign('sender_id').references('users.id').onDelete('CASCADE')
+    table.foreign('sender_id').references('attendees.id').onDelete('CASCADE')
     table.integer('receiver_id')
-    table.foreign('receiver_id').references('users.id').onDelete('CASCADE')
+    table.foreign('receiver_id').references('attendees.id').onDelete('CASCADE')
     table.integer('event_id')
     table.foreign('event_id').references('events.id').onDelete('CASCADE')
     table.string('status', 10).notNullable()
@@ -63,9 +63,9 @@ exports.up = function(knex, Promise) {
   .createTable('connections', function (table) {
     table.increments('id').primary()
     table.integer('requester_id')
-    table.foreign('requester_id').references('users.id').onDelete('CASCADE')
+    table.foreign('requester_id').references('attendees.id').onDelete('CASCADE')
     table.integer('responder_id')
-    table.foreign('responder_id').references('users.id').onDelete('CASCADE')
+    table.foreign('responder_id').references('attendees.id').onDelete('CASCADE')
     table.integer('event_id')
     table.foreign('event_id').references('events.id').onDelete('CASCADE')
     table.string('status', 10).notNullable()
@@ -87,16 +87,16 @@ exports.up = function(knex, Promise) {
 
   .createTable('haves', function (table) {
     table.increments('id').primary()
-    table.integer('user_id')
-    table.foreign('user_id').references('users.id').onDelete('CASCADE')
+    table.integer('attendee_id')
+    table.foreign('attendee_id').references('attendees.id').onDelete('CASCADE')
     table.integer('sub_category_id')
     table.foreign('sub_category_id').references('sub_categories.id').onDelete('CASCADE')
   })
 
   .createTable('wants', function (table) {
     table.increments('id').primary()
-    table.integer('user_id')
-    table.foreign('user_id').references('users.id').onDelete('CASCADE')
+    table.integer('attendee_id')
+    table.foreign('attendee_id').references('attendees.id').onDelete('CASCADE')
     table.integer('sub_category_id')
     table.foreign('sub_category_id').references('sub_categories.id').onDelete('CASCADE')
   })
@@ -112,6 +112,7 @@ exports.down = function(knex, Promise) {
   .dropTable('connections')
   .dropTable('card_shares')
   .dropTable('organizers')
+  .dropTable('attendees')
   .dropTable('events')
   .dropTable('users')
 };
