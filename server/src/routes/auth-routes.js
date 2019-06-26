@@ -19,8 +19,8 @@ router.get('/linkedin', addSocketIdtoSession, passport.authenticate('linkedin', 
 // hand control to passport to use code to grab profile info
 router.get('/linkedin/callback', passport.authenticate('linkedin', { session: true }), (req, res) => {
   const io = req.app.get('io')
-  req.session.user.id = req.user.id;
   io.in(req.session.socketId).emit('user', JSON.stringify(req.user));
+  req.session = req.user;
   res.send(onSucsess);
 });
 
@@ -31,7 +31,7 @@ const onSucsess =
         <title>Page Title</title>
       </head>
       <body>
-        <h1>My Welcome</h1>
+        <h1>Welcome</h1>
           <p>You can close now this page</p>
           <script language="javascript" type="text/javascript">
             close();
