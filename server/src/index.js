@@ -22,7 +22,8 @@ const model         = require('./model/model');
 console.log('model', model);
 app.use(session);
 io.use(sharedsession(session, {autoSave: true}));
-
+// make io avialable in other file in request scope
+app.set('io', io);
 app.use(passport.initialize());
 app.use(passport.session());
 
