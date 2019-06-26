@@ -30,8 +30,49 @@ module.exports = function(knex){
     );
   }
 
+  // Connections 
+
+  function getConnection(requester_id, responder_id, cb){
+    knex.select('*')
+    .from('connections')
+    .where(function() {
+      this.where('requester_id', requester_id)
+      .andWhere('responder_id', responder_id)
+    })
+    .orWhere(function() {
+      this.where('requester_id', responder_id)
+      .andWhere('responder_id', requester_id) 
+    })
+    .asCallback(cb)
+  }
+
+  function createConnection(requester_id, responder_id, cb) {
+    knex('connections')
+    .insert([{requester_id : requester_id, responder_id : responder_id, event_id:           1000001,  status:'SENT'}])
+    .returning('id')
+    .asCallback(cb);
+  }
+
+  function createConnectionIfNotExist(requester_id, responder_id, cb){
+    getConnection(requester_id, responder_id, 
+      function(err, connection){
+        if(err){
+          cb(err,null);
+        }if(connection && connection.length > 0){
+          cb(null, {error : 'connection already exists'})
+        }
+        else{
+          createConnection(requester_id, responder_id, cb)
+        }
+      }
+    );
+  }
+
   return {
-    getAttendees
+    getAttendees,
+    getConnection,
+    createConnection,
+    createConnectionIfNotExist
   }  
 }
 

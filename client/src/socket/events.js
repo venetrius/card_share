@@ -17,6 +17,10 @@ function eventHandlers(App) {
       App.sendAlert(msg);
       msg=JSON.parse(msg);
       App.setState({categories: msg.categories, subCategories: msg.subCategories});
+    },
+
+    connection_change : function(msg){
+      App.sendAlert(msg)
     }
 
   }
