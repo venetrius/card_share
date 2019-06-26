@@ -54,11 +54,15 @@ class App extends Component {
   }
 
   requestConnection(){
-    this.state.connection.emit('request_connection',{requester_id : 100001, responder_id : 1000003});
+    this.state.connection.emit('request_connection',{requester_id : 1000001, responder_id : 1000003});
   }
   
   acceptConnection(){
     this.state.connection.emit('accept_connection',{requester_id : 1000001, responder_id : 1000003});
+  }
+
+  ignoreConnection(){
+    this.state.connection.emit('ignore_connection',{requester_id : 1000001, responder_id : 1000003});
   }
 
   logOut(){
@@ -80,6 +84,8 @@ class App extends Component {
         <button onClick={() => this.getAttendees() } > Attendees </button>
         <button onClick={() => this.requestConnection() } > Connect </button>
         <button onClick={() => this.acceptConnection() } > AcceptConnection </button>
+        <button onClick={() => this.ignoreConnection() } > IgnoreConnection </button>
+
 
         <Notifications
           show={this.state.modalShow}
