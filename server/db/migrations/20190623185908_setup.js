@@ -1,4 +1,3 @@
-
 exports.up = function(knex, Promise) {
   return knex.schema
 
@@ -31,6 +30,8 @@ exports.up = function(knex, Promise) {
     table.increments('id').primary()
     table.integer('user_id')
     table.foreign('user_id').references('users.id').onDelete('CASCADE')
+    table.integer('event_id')
+    table.foreign('event_id').references('events.id').onDelete('CASCADE')
     table.string('email_address', 255).unique().notNullable()
     table.string('first_name', 255).notNullable()
     table.string('last_name', 255)

@@ -36,7 +36,7 @@ const get_attendees = function(id) {
     }else{
       message = JSON.stringify(list);
     }
-    socket.emit('message', message);
+    socket.emit('attendees', message);
   })
 };
 
