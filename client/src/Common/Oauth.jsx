@@ -29,10 +29,11 @@ export default class OAuth extends Component {
 
 openPopup() {
   const { provider, socket } = this.props
+  const socketId = socket ? socket.id : '';
   const width = 600, height = 600
   const left = (window.innerWidth / 2) - (width / 2)
   const top = (window.innerHeight / 2) - (height / 2)
-  const url = `http://127.0.0.1:8081/auth/linkedin?socketId=${socket.id}`
+  const url = `http://127.0.0.1:8081/auth/linkedin?socketId=${socketId}`
         
 
   return window.open(url, '',       

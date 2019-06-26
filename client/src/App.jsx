@@ -4,8 +4,6 @@ import Footer from './Common/Footer.jsx';
 import Header from './Common/Header.jsx';
 import Main from './Main.jsx';
 import Notifications from './Common/Notifications.jsx'
-import OAuth from './Common/Oauth.jsx'
-
 
 class App extends Component {
   constructor() {
@@ -16,8 +14,6 @@ class App extends Component {
       connection: null,
       user : null
     };
-   
-
     this.showNotifications=this.showNotifications.bind(this)
   }
 
@@ -50,38 +46,12 @@ class App extends Component {
     this.setState({ modalShow: true })
   }
 
-
-  getOauth(){
-    if(this.state.connection){
-      return (
-        <div className={'wrapper'}>
-        <OAuth
-                provider='linkedin'
-                socket={this.state.connection}
-              />
-      </div>
-      )
-    }
-  }
-
-  getO(){
-    if(this.state.connection){
-      return (
-       this.getOauth()
-      );
-    }
-    return <div>'Login'</div>
-  }
-
   render(){
     let modalClose = () => this.setState({ modalShow: false });
     console.log(this.state.categories)
     return (
       <div>
-
-{this.getO()}
-
-        <Header showNotifications={this.showNotifications}/>
+        <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user}/>
         <button onClick={() => this.getUser() } > User details </button>
         <Notifications
           show={this.state.modalShow}
