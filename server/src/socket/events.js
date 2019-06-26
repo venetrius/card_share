@@ -44,10 +44,19 @@ const get_attendees = function(id) {
 //              CARD EVENTS
 // ----------------------------------------------
 
-const request_connection = function(user_id){
+const request_connection = function(message){
   const socket = this;
-  const client_id = socket.id
-  console.log(`${client_id} requested a connection with ${user_id}`)
+  const {requester_id, responder_id} =  message;
+  dataHelpers.createConnectionIfNotExist(requester_id, responder_id,function(err, list){
+    let message;
+    if(err){
+      console.log(err);
+      message = 'error please try again later';
+    }else{
+      message = JSON.stringify(list);
+    }
+    socket.emit('connection_change', message);
+  })
 };
 
 const accept_connection = function(user_id){

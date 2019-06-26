@@ -4,6 +4,7 @@ import Footer from './Common/Footer.jsx';
 import Header from './Common/Header.jsx';
 import Main from './Main.jsx';
 import Notifications from './Common/Notifications.jsx';
+const socketEvents = require('./socket/events');
 
 class App extends Component {
   constructor() {
@@ -29,7 +30,7 @@ class App extends Component {
     const App = this;
     let connection = socketIOClient(this.state.endpoint);
     // Import and assign socket event handlers
-    const eventHandlers = require('./socket/events')(App);
+    const eventHandlers = socketEvents(App);
     for (var key in eventHandlers) {
       connection.on(key, eventHandlers[key]);
     }
@@ -51,6 +52,10 @@ class App extends Component {
   getAttendees(){
     this.state.connection.emit('get_attendees','1000001');
   }
+
+  requestConnection(){
+    this.state.connection.emit('request_connection',{requester_id : 1000001, responder_id : 1000003});
+  }
   
   logOut(){
     this.state.connection.emit('log_out','');
@@ -69,7 +74,7 @@ class App extends Component {
         <button onClick={() => this.getUser() } > User details </button>
         <button onClick={() => this.getCategories() } > Categories </button>
         <button onClick={() => this.getAttendees() } > Attendees </button>
-        <button onClick={() => this.connectWith() } > Connect </button>
+        <button onClick={() => this.requestConnection() } > Connect </button>
         <Notifications
           show={this.state.modalShow}
           onHide={modalClose}
