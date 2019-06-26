@@ -18,7 +18,6 @@ module.exports = function(knex){
       .where('token', token)
       .asCallback(function(err, users) 
       {
-        console.log('datahelper', users);
         if (err) {
           throw err;
         }

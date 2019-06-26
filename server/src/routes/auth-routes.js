@@ -2,6 +2,7 @@ const router = require('express').Router();
 const passport = require('passport');
 
 const addSocketIdtoSession = (req, res, next) => {
+  console.log('socketIdAs paRam : ', req.query.socketId)
   req.session.socketId = req.query.socketId
   next()
 }
@@ -18,7 +19,9 @@ router.get('/linkedin', addSocketIdtoSession, passport.authenticate('linkedin', 
 // hand control to passport to use code to grab profile info
 router.get('/linkedin/callback', passport.authenticate('linkedin', { session: true }), (req, res) => {
   const io = req.app.get('io')
-  req.session = req.user;
+  req.session.user.id = req.user.id;
+  console.log('socketId', req.session.socketId) 
+
   io.in(req.session.socketId).emit('message', JSON.stringify(req.user));
   res.send(onSucsess);
 });

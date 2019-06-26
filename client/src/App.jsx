@@ -12,9 +12,11 @@ class App extends Component {
     super();
     this.state = {
       endpoint: "http://127.0.0.1:8081",
-      modalShow: false
+      modalShow: false,
+      connection: null,
+      user : null
     };
-    this.connection = null;
+   
 
     this.showNotifications=this.showNotifications.bind(this)
   }
@@ -29,17 +31,18 @@ class App extends Component {
 
   connect(){
     const App = this;
-    this.connection = socketIOClient(this.state.endpoint);
-    this.connection.on('message', function(msg){
+    let connection = socketIOClient(this.state.endpoint);
+    connection.on('message', function(msg){
       App.sendAlert(msg);
       msg=JSON.parse(msg)
       App.setState({categories: msg.categories, subCategories: msg.subCategories});
     });
-    console.log(App.connection);
+    this.setState({connection : connection});
+    console.log(App.state.connection);
   }
 
   getUser(){
-    this.connection.emit('get_user','1000001');
+    this.state.connection.emit('get_user','1000001');
   }
 
 
@@ -49,13 +52,12 @@ class App extends Component {
 
 
   getOauth(){
-    if(this.connection){
+    if(this.state.connection){
       return (
         <div className={'wrapper'}>
-          Hi from OAUTH
         <OAuth
                 provider='linkedin'
-                socket={this.connection}
+                socket={this.state.connection}
               />
       </div>
       )
@@ -63,12 +65,12 @@ class App extends Component {
   }
 
   getO(){
-    if(this.connection){
+    if(this.state.connection){
       return (
        this.getOauth()
       );
     }
-    return <div>'hmmmmmmm'</div>
+    return <div>'Login'</div>
   }
 
   render(){
