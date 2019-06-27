@@ -65,6 +65,18 @@ class App extends Component {
     this.state.connection.emit('ignore_connection',{requester_id : 1000001, responder_id : 1000003});
   }
 
+  sendCard(){
+    this.state.connection.emit('send_card',{sender_id : 1000001, receiver_id : 1000003});
+  }
+  
+  saveCard(){
+    this.state.connection.emit('save_card',{sender_id : 1000001, receiver_id : 1000003});
+  }
+
+  deleteCard(){
+    this.state.connection.emit('delete_card',{sender_id : 1000001, receiver_id : 1000003});
+  }
+
   logOut(){
     this.state.connection.emit('log_out','');
   }
@@ -85,7 +97,9 @@ class App extends Component {
         <button onClick={() => this.requestConnection() } > Connect </button>
         <button onClick={() => this.acceptConnection() } > AcceptConnection </button>
         <button onClick={() => this.ignoreConnection() } > IgnoreConnection </button>
-
+        <button onClick={() => this.sendCard() } > sendCard </button>
+        <button onClick={() => this.saveCard() } > saveCard </button>
+        <button onClick={() => this.deleteCard() } > deleteCard </button>
 
         <Notifications
           show={this.state.modalShow}

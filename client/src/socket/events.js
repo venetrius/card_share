@@ -21,8 +21,11 @@ function eventHandlers(App) {
 
     connection_change : function(msg){
       App.sendAlert(msg)
-    }
+    },
 
+    cardshare_change : function(msg){
+      App.sendAlert(msg)
+    }
   }
 }
 

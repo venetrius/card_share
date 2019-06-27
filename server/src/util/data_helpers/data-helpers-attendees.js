@@ -78,12 +78,55 @@ module.exports = function(knex){
     );
   }
 
+  function getCardShare(sender_id, receiver_id, cb){
+    knex.select('*')
+    .from('card_shares')
+    .where('sender_id', sender_id)
+    .andWhere('receiver_id', receiver_id)
+    .asCallback(cb)
+  }
+
+  function createCardShare(sender_id, receiver_id, cb) {
+    knex('card_shares')
+    .insert([{sender_id : sender_id, receiver_id : receiver_id, event_id: 1000001,  status:'PENDING'}])
+    .returning('*')
+    .asCallback(cb);
+  }
+
+  function changeCardShareStatus(sender_id, receiver_id, status, cb){
+    knex('card_shares')
+    .where('sender_id', sender_id)
+    .andWhere('receiver_id', receiver_id)
+    .andWhere('status', "PENDING")
+    .update({status})
+    .returning('*')
+    .asCallback(cb);
+  }
+
+  function createCardShareIfNotExist(sender_id, receiver_id, cb){
+    getCardShare(sender_id, receiver_id, 
+      function(err, cardShares){
+        if(err){
+          cb(err,null);
+        }if(cardShares && cardShares.length > 0){
+          cb(null, {error : 'card shares already exists'})
+        }
+        else{
+          createCardShare(sender_id, receiver_id, cb)
+        }
+      }
+    );
+  }
+
+
   return {
     getAttendees,
     getConnection,
     createConnection,
     createConnectionIfNotExist,
-    changeConnectionStatus
+    changeConnectionStatus,
+    createCardShareIfNotExist,
+    changeCardShareStatus
   }  
 }
 
