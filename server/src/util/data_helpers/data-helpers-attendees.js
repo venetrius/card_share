@@ -29,6 +29,35 @@ module.exports = function(knex){
       }
     );
   }
+  function getConnections(attendee_id, cb){
+    knex.select('*')
+    .from('connections')
+    .where('requester_id', attendee_id)
+    .orWhere('responder_id', attendee_id) 
+    .asCallback(cb)
+  }
+
+  function getCardShares(attendee_id, cb){
+    knex.select('*')
+    .from('card_shares')
+    .where('sender_id', attendee_id)
+    .orWhere('receiver_id', attendee_id) 
+    .asCallback(cb)
+  }
+
+  function getRelationships(attendee_id, cb){
+    getConnections(attendee_id, 
+      function(err, connections){
+        if(err){
+          cb(err, null);
+        }else{
+          getCardShares(attendee_id, function(err, cardShares){
+            cb(err, {connections, cardShares});
+          })
+        }
+      }
+    )
+  }
 
   function getAttendees(event_id, cb) {
     knex.select(
@@ -158,7 +187,8 @@ module.exports = function(knex){
     changeConnectionStatus,
     createCardShareIfNotExist,
     changeCardShareStatus,
-    findOrCreateAttendee
+    findOrCreateAttendee,
+    getRelationships
   }  
 }
 
