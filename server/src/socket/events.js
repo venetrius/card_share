@@ -35,11 +35,54 @@ const applyCardShares = function (cardShare, attendee_id, attendeesMap){
   }  
 }
 
+const getAccessLevel = function (attendee){
+  let accessLevel = 'BASE'
+  if(attendee.cards &&  attendee.cards.from && attendee.cards.from !== 'DISCARDED'){
+    accessLevel = 'FULL'
+  }
+  else if(attendee.connection && attendee.connection.status === 'CONNECTED'){
+    accessLevel = 'CONNECTION'
+  }
+  return accessLevel;
+}
+
+const deleteContactInfo = function (attendee){
+  delete attendee.email_address;
+  delete attendee.last_name;
+  delete attendee.position;
+  delete attendee.company;
+  delete attendee['linkedin-link'];
+}
+
+const deleteLastNameAndPicture = function (attendee){
+  delete attendee.first_name;
+  delete attendee.photo;
+}
+
+const deleteAttributes = function (attendeesMap){
+  for(attendeeId in attendeesMap){
+    const attendee = attendeesMap[attendeeId];
+    const accessLevel = getAccessLevel(attendee); 
+    if(accessLevel === 'BASE'){
+      deleteContactInfo(attendee);
+      deleteLastNameAndPicture(attendee);
+    }else if(accessLevel === "CONNECTION"){
+      deleteContactInfo(attendee);
+    }
+    delete attendee.created_at;
+    delete attendee.user_id;
+    delete attendee.event_id;
+    console.log('attende', attendee);
+  }
+}
+
 const filterProfiles = function(attendee_id, attendees, relationships){
   const attendeesMap = {};
   attendees.forEach(attendee => {attendeesMap[attendee.id] = attendee});
+  delete attendeesMap[attendee_id];
   relationships.connections.forEach(connection => applyConnection(connection, attendee_id, attendeesMap));
   relationships.cardShares.forEach(cardShare => applyCardShares(cardShare, attendee_id, attendeesMap));
+  deleteAttributes(attendeesMap);
   return attendeesMap;
 }
 
