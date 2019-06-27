@@ -132,7 +132,7 @@ module.exports = function(knex){
           cb(null, {error : 'connection already exists'})
         }
         else{
-          createConnection(requester_id, responder_id, cb)
+          createConnection(requester_id, responder_id, (err, conn) =>  cb(err,conn[0]))
         }
       }
     );

@@ -55,7 +55,7 @@ class App extends Component {
   }
 
   requestConnection(){
-    this.state.connection.emit('request_connection',{requester_id : 5, responder_id : 4});
+    this.state.connection.emit('request_connection',{requester_id : 7, responder_id : 6});
   }
   
   acceptConnection(){

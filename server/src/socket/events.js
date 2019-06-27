@@ -128,9 +128,9 @@ const getCardShareChangeCb = function(socket, sender_id){
 
 const sendNotificationIfOnline = function(attendeeID, messageType, message){
   const targetSocketID = model.retriveUser(attendeeID);
-  if(targetSocketID){
+  if(targetSocketID && message && ! message.error){
     if(io.in(targetSocketID)){
-      io.in(targetSocketID).emit(messageType, message);
+      io.in(targetSocketID).emit(messageType, JSON.stringify(message));
     }
   }
 }
@@ -192,16 +192,16 @@ const get_attendees = function(messageIn) {
 const request_connection = function(message){
   const socket = this;
   const {requester_id, responder_id} =  message;
-  dataHelpers.createConnectionIfNotExist(requester_id, responder_id,function(err, list){
+  dataHelpers.createConnectionIfNotExist(requester_id, responder_id,function(err, connections){
     let message;
     if(err){
       console.log(err);
-      message = 'error please try again later';
+      message = {error : 'please try again later'}
     }else{
-      message = JSON.stringify(list[0]);
+      message = connections;
     }
     sendNotificationIfOnline(responder_id, 'connection_change', message);
-    socket.emit('connection_change', message);
+    socket.emit('connection_change',  JSON.stringify(message));
   })
 };
 
