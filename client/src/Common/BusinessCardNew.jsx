@@ -8,7 +8,7 @@ class BusinessCard extends Component {
     return (
       <Card style={{ width: '18rem' }}>
         <Card.Header>
-          <Card.Title>Mickey Mouse</Card.Title>
+          <Card.Title>{this.props.first_name} {this.props.last_name}</Card.Title>
 
         </Card.Header>
       
