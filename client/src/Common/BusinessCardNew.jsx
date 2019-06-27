@@ -13,6 +13,7 @@ class BusinessCard extends Component {
 
   render(){
     const attendee = this.props.attendee;
+    console.log(attendee)
     return (
       <Card>
         <Card.Header>
