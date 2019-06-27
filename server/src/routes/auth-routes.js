@@ -48,7 +48,8 @@ router.get('/linkedin/callback', passport.authenticate('linkedin', { session: tr
          }else{
            //TODO user to attendee
            io.in(req.session.socketId).emit('user', JSON.stringify({attendee : attendee[0], userId : req.user.id}));
-           req.session = req.user;
+           attendee.type = 'attendee';
+           req.session = attendee;
            res.send(onSucsess);
          }
       }

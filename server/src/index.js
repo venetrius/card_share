@@ -37,7 +37,10 @@ app.get('/', function(req, res){
 
 
 io.on('connection', function(socket){
-  model.register(socket.handshake.session.id, socket.id);
+  if(socket.handshake.session.type === 'attendee'){
+    // register attendee in model -> ability send real time notifications
+    model.register(socket.handshake.session[0].id, socket.id);
+  } 
   let eventHandlers = getEventHandlers(io, model)
   for (var key in eventHandlers) {
     socket.on(key, eventHandlers[key]);

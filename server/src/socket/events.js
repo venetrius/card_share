@@ -44,6 +44,15 @@ const getCardShareChangeCb = function(socket, sender_id){
   return cardShareChangeCb;
 }
 
+const sendNotificationIfOnline = function(attendeeID, messageType, message){
+  const targetSocketID = model.retriveUser(attendeeID);
+  if(targetSocketID){
+    if(io.in(targetSocketID)){
+      io.in(targetSocketID).emit(messageType, message);
+    }
+  }
+}
+
 /**
  * 
  */
@@ -102,9 +111,7 @@ const request_connection = function(message){
     }else{
       message = JSON.stringify(list[0]);
     }
-    if(model[responder_id]){
-      io[model[responder_id]].emit('connection_change', message);
-    }
+    sendNotificationIfOnline(responder_id, 'connection_change', message);
     socket.emit('connection_change', message);
   })
 };
