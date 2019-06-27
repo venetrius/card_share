@@ -15,7 +15,8 @@ class Header extends Component {
       return (
         <OAuth
         provider='linkedin'
-        socket={this.props.socket} 
+        socket={this.props.socket}
+        event= {this.props.event}
       />
       )
     }else{
