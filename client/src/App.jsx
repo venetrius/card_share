@@ -51,7 +51,7 @@ class App extends Component {
   }
 
   getAttendees(){
-    this.state.connection.emit('get_attendees','1000001');
+    this.state.connection.emit('get_attendees',{event_id : 1000001, attendee_id : 1000003});
   }
 
   requestConnection(){

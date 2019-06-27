@@ -4,6 +4,45 @@ const dataHelpers = require('../util/data_helpers/data-helpers');
 /********************
  * HELPER FUNCTIONS *
  ********************/
+const applyConnection = function (connection, attendee_id, attendeesMap){
+  const isISent = connection.requester_id === attendee_id;
+  if(isISent){
+    const conn = {
+      sender : attendee_id,
+      status : connection.status === 'CONNECTED' ?  'CONNECTED' : 'SENT'
+    }
+    attendeesMap[connection.responder_id].connection = conn;
+  }else{
+    const conn = {
+      sender : connection.requester_id,
+      status : connection.status
+    }
+    attendeesMap[connection.requester_id].connection = conn;
+  }
+  
+}
+
+const applyCardShares = function (cardShare, attendee_id, attendeesMap){
+  const ifISent = cardShare.sender_id === attendee_id;
+  if(ifISent){
+    const cards = attendeesMap[cardShare.receiver_id].cards ? attendeesMap[cardShare.receiver_id].cards : {};
+    cards.to = 'SENT';
+    attendeesMap[cardShare.receiver_id].cards = cards;
+  }else{
+    const cards = attendeesMap[cardShare.sender_id].cards ? attendeesMap[cardShare.sender_id].cards : {};
+    cards.from = cardShare.status;
+    attendeesMap[cardShare.sender_id].cards = cards;
+  }  
+}
+
+const filterProfiles = function(attendee_id, attendees, relationships){
+  const attendeesMap = {};
+  attendees.forEach(attendee => {attendeesMap[attendee.id] = attendee});
+  relationships.connections.forEach(connection => applyConnection(connection, attendee_id, attendeesMap));
+  relationships.cardShares.forEach(cardShare => applyCardShares(cardShare, attendee_id, attendeesMap));
+  return attendeesMap;
+}
+
 const getConnectionChangeCb = function(socket, requester_id){
   const connectionChangeCb = function(err, list){
     let message;
@@ -72,16 +111,23 @@ const get_user = function(id){
 };
 
 
-const get_attendees = function(id) {
+const get_attendees = function(messageIn) {
+  const {event_id, attendee_id} =  messageIn;
   const socket = this;
-  dataHelpers.getAttendees(id,function(err, list){
+  dataHelpers.getAttendees(event_id,function(err, attendees){
     let message;
     if(err){
       message = 'error please try again later';
+      socket.emit('attendees', message);
     }else{
-      message = JSON.stringify(list);
+      dataHelpers.getRelationships(attendee_id,function(err, relationships){
+       // console.log(relationships);
+        const filteredAttendeProfiles = filterProfiles(attendee_id, attendees, relationships);
+        socket.emit('attendees', JSON.stringify(filteredAttendeProfiles));
+
+      })
     }
-    socket.emit('attendees', message);
+
   })
 };
 
