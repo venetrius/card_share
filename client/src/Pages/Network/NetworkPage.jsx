@@ -8,10 +8,15 @@ class NetworkPage extends Component {
     return (
       <div>
         Hello from the NetworkPage!!
-        <CardDeck>
+        <CardDeck bsClass="card-deck">
           {this.props.attendees.map((attendee) =>
           <BusinessCard 
             key={ attendee.id }
+            first_name={ attendee.first_name }
+            last_name={ attendee.last_name }
+            position={ attendee.position }
+            company={ attendee.company }
+            email={ attendee.email_address }
             tagline={ attendee.tagline }
             haves={ attendee.haves }
             wants={ attendee.wants } />

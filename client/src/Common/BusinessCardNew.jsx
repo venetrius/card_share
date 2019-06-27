@@ -1,20 +1,59 @@
 import React, {Component} from 'react';
+// import Interests from './Interests.jsx';
 import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Image from 'react-bootstrap/Image'
 import Button from 'react-bootstrap/Button'
+import ListGroup from 'react-bootstrap/ListGroup'
+import Accordion from 'react-bootstrap/Accordion'
 
 class BusinessCard extends Component {
 
   render(){
     return (
-      <Card style={{ width: '18rem' }}>
+      <Card>
         <Card.Header>
-          <Card.Title>{this.props.first_name} {this.props.last_name}</Card.Title>
+          <Card.Title>
+            {this.props.first_name} {this.props.last_name}
+          </Card.Title>
 
         </Card.Header>
-      
 
 
         <Card.Body>
+          <Container>
+            <Row>
+              <Col xs={4} md={4}>
+                <Image src="https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png" rounded width={120} height={120} alt="120x120"/>
+              </Col>
+              <Col xs={8} md={8}>
+                <Container>
+                  <ListGroup>
+                    <ListGroup.Item>Haves {this.props.haves[0]}</ListGroup.Item>
+                    <ListGroup.Item>Wants {this.props.wants[0]}</ListGroup.Item>
+                  </ListGroup>
+                </Container>
+              </Col>
+            </Row>
+          </Container>
+
+          <Accordion>
+            <Card>
+              <Accordion.Toggle as={Card.Header} eventKey="0">
+                Contact Info
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  {this.props.position} <br/>
+                  {this.props.company} <br/>
+                  {this.props.email}
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+          </Accordion>
+
 
           <Card.Text>
             {this.props.tagline}
