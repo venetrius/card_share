@@ -172,7 +172,7 @@ module.exports = function(knex){
           cb(null, {error : 'card shares already exists'})
         }
         else{
-          createCardShare(sender_id, receiver_id, cb)
+          createCardShare(sender_id, receiver_id, (err, cards) => cb(err,cards[0]));
         }
       }
     );

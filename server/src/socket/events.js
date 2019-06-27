@@ -74,7 +74,6 @@ const deleteAttributes = function (attendeesMap){
     delete attendee.created_at;
     delete attendee.user_id;
     delete attendee.event_id;
-    console.log('attende', attendee);
   }
 }
 
@@ -92,7 +91,6 @@ const getConnectionChangeCb = function(socket, requester_id, isToForward){
   const connectionChangeCb = function(err, list){
     let message;
     if(err){
-      console.log(err);
       message = {error : 'error please try again later'};
     }else{
       if(!list || list.length == 0){
@@ -178,9 +176,8 @@ const get_attendees = function(messageIn) {
       socket.emit('attendees', message);
     }else{
       dataHelpers.getRelationships(attendee_id,function(err, relationships){
-       // console.log(relationships);
-        const filteredAttendeProfiles = filterProfiles(attendee_id, attendees, relationships);
-        socket.emit('attendees', JSON.stringify(filteredAttendeProfiles));
+        const filteredAttendeeProfiles = filterProfiles(attendee_id, attendees, relationships);
+        socket.emit('attendees', JSON.stringify(filteredAttendeeProfiles));
 
       })
     }
@@ -223,21 +220,19 @@ const ignore_connection = function(incoming_message){
      'DECLINED', getConnectionChangeCb(socket, requester_id, false))
 };
 
-
 const send_card = function(message){
   const socket = this;
   const {sender_id, receiver_id} =  message;
-  dataHelpers.createCardShareIfNotExist(sender_id, receiver_id,function(err, list){
+  dataHelpers.createCardShareIfNotExist(sender_id, receiver_id, function(err, cardShare){
     let message;
     if(err){
       console.log(err);
       message = 'error please try again later';
-    }else if(list.error){
-      message = JSON.stringify(list);
     }else{
-      message = JSON.stringify(list[0]);
+      message = cardShare;
     }
-    socket.emit('connection_change', message);
+    sendNotificationIfOnline(receiver_id, 'connection_change', message);
+    socket.emit('connection_change', JSON.stringify(message));
   })
 };
 
