@@ -88,7 +88,7 @@ const filterProfiles = function(attendee_id, attendees, relationships){
   return attendeesMap;
 }
 
-const getConnectionChangeCb = function(socket, requester_id){
+const getConnectionChangeCb = function(socket, requester_id, isToForward){
   const connectionChangeCb = function(err, list){
     let message;
     if(err){
@@ -101,6 +101,9 @@ const getConnectionChangeCb = function(socket, requester_id){
       else{
         message = list[0];
       }
+    }
+    if(isToForward){
+      sendNotificationIfOnline(requester_id, 'connection_change', message);
     }
     socket.emit('connection_change', JSON.stringify(message));
   }
@@ -208,13 +211,16 @@ const request_connection = function(message){
 const accept_connection = function(incoming_message){
   const socket = this;
   const {requester_id, responder_id} =  incoming_message;
-  dataHelpers.changeConnectionStatus(requester_id, responder_id, 'CONNECTED', getConnectionChangeCb(this, requester_id))
+  const forward = {estination: requester_id}
+  dataHelpers.changeConnectionStatus(requester_id, responder_id,
+     'CONNECTED', getConnectionChangeCb(this, requester_id, true))
 };
 
 const ignore_connection = function(incoming_message){
   const socket = this;
   const {requester_id, responder_id} =  incoming_message;
-  dataHelpers.changeConnectionStatus(requester_id, responder_id, 'DECLINED', getConnectionChangeCb(socket, requester_id))
+  dataHelpers.changeConnectionStatus(requester_id, responder_id,
+     'DECLINED', getConnectionChangeCb(socket, requester_id, false))
 };
 
 
