@@ -15,7 +15,8 @@ exports.up = function(knex, Promise) {
 
   .createTable('users', function (table) {
     table.increments('id').primary()
-    table.string('email_address', 255).unique().notNullable()
+    table.string('email_address', 255)
+    table.string('photo', 255)
     table.string('token', 255).notNullable()
     table.string('first_name', 255).notNullable()
     table.string('last_name', 255)
@@ -32,7 +33,8 @@ exports.up = function(knex, Promise) {
     table.foreign('user_id').references('users.id').onDelete('CASCADE')
     table.integer('event_id')
     table.foreign('event_id').references('events.id').onDelete('CASCADE')
-    table.string('email_address', 255).unique().notNullable()
+    table.string('email_address', 255)
+    table.string('photo', 255)
     table.string('first_name', 255).notNullable()
     table.string('last_name', 255)
     table.string('position', 255)
