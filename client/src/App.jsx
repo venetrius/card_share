@@ -13,7 +13,8 @@ class App extends Component {
       endpoint: "http://127.0.0.1:8081",
       modalShow: false,
       connection: null,
-      user : null
+      user : null,
+      event : {id : 1000001}
     };
     this.showNotifications=this.showNotifications.bind(this)
   }
@@ -90,7 +91,7 @@ class App extends Component {
     console.log(this.state.categories)
     return (
       <div>
-        <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()}/>
+        <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()} event={this.state.event}/>
         <button onClick={() => this.getUser() } > User details </button>
         <button onClick={() => this.getCategories() } > Categories </button>
         <button onClick={() => this.getAttendees() } > Attendees </button>
@@ -105,7 +106,7 @@ class App extends Component {
           show={this.state.modalShow}
           onHide={modalClose}
         />
-        <Main categories={this.state.categories} subCategories={this.state.subCategories}/>
+        <Main categories={this.state.categories} subCategories={this.state.subCategories} attendees={this.state.attendees}/>
         <Footer/>
       </div>
     );

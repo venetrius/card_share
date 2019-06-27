@@ -1,4 +1,35 @@
 module.exports = function(knex){
+
+  function getAttendeeByUserAndEvent(user_id, event_id, cb){
+    knex.select('*')
+    .from('attendees')
+    .where('user_id', user_id)
+    .andWhere('event_id', event_id)
+    .asCallback(cb)
+  }
+
+  function createAttendee(profile, cb) {
+    knex('attendees')
+    .insert([profile])
+    .returning('*')
+    .asCallback(cb);
+  }
+
+  function findOrCreateAttendee(user_id, event_id, profile, cb){
+    getAttendeeByUserAndEvent(user_id, event_id, 
+      function(err, attendee){
+        if(err){
+          cb(err,null);
+        }if(attendee && attendee.length > 0){
+          cb(null, attendee)
+        }
+        else{
+          createAttendee(profile, cb)
+        }
+      }
+    );
+  }
+
   function getAttendees(event_id, cb) {
     knex.select(
       'attendees.*',
@@ -126,7 +157,8 @@ module.exports = function(knex){
     createConnectionIfNotExist,
     changeConnectionStatus,
     createCardShareIfNotExist,
-    changeCardShareStatus
+    changeCardShareStatus,
+    findOrCreateAttendee
   }  
 }
 
