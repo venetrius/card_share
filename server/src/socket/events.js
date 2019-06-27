@@ -1,6 +1,8 @@
 const dataHelpers = require('../util/data_helpers/data-helpers');
 
 
+module.exports = function (io, model){
+
 /********************
  * HELPER FUNCTIONS *
  ********************/
@@ -100,6 +102,9 @@ const request_connection = function(message){
     }else{
       message = JSON.stringify(list[0]);
     }
+    if(model[responder_id]){
+      io[model[responder_id]].emit('connection_change', message);
+    }
     socket.emit('connection_change', message);
   })
 };
@@ -152,7 +157,7 @@ const delete_card = function(incoming_message){
 //              Exports Module
 // ----------------------------------------------
 
-  module.exports = {
+  return {
     get_categories,
     get_user,
     get_attendees,
@@ -163,3 +168,4 @@ const delete_card = function(incoming_message){
     save_card,
     delete_card
   };
+}

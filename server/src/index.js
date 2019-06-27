@@ -10,7 +10,7 @@ const PORT          = process.env.PORT || 8081;
 const dataHelpers   = require('./util/data_helpers/data-helpers');
 const passport      = require('passport');
 const passportSetup = require('./config/passport-setup')(dataHelpers);
-const eventHandlers = require('./socket/events');
+const getEventHandlers = require('./socket/events');
 const authRoutes    = require('./routes/auth-routes');
 const profileRoutes = require('./routes/profile-routes');
 const sharedsession = require("express-socket.io-session");
@@ -38,6 +38,7 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   model.register(socket.handshake.session.id, socket.id);
+  let eventHandlers = getEventHandlers(io, model)
   for (var key in eventHandlers) {
     socket.on(key, eventHandlers[key]);
   }
