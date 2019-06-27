@@ -7,8 +7,8 @@ class CardIcons extends Component {
 
     return (
       <span>
-        <i class="far fa-address-card"></i>
-        <i class="far fa-bell"></i>
+        <i className="far fa-address-card"></i>
+        <i className="far fa-bell"></i>
       </span>
     );
   }
