@@ -17,9 +17,10 @@ passport.deserializeUser((id, done) =>
 const createUserProfile = function(profile){
     const userProfile = {
         token : profile.id,
+        photo : profile.photos.length > 0 ? profile.photos[0].value : null,
         first_name: profile.name.givenName,
         last_name: profile.name.familyName,
-        email_address:'drum@gmail.com',
+        email_address: profile.name.givenName + '@' + profile.name.familyName + '.com',
         'linkedin-link':'https://www.linkedin.com'
     }
     return userProfile;
@@ -45,8 +46,7 @@ const setUpLinkedinPassport = function (dataHelpersParam) {
             dataHelpers.createUser(
               userProfile,
               function (err, user) {
-                console.log('user', user);
-                done(null, user);
+                done(null, user[0]);
               }
             );
           }

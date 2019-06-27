@@ -4,7 +4,7 @@ const passport = require('passport');
 
 const authCheck = (req, res, next) => {
     if(!req.session || !req.session.id){
-      res.redirect('/auth/linkedin');
+      res.send('no session');
     } else {
       next();
     }
