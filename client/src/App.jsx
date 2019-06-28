@@ -62,7 +62,7 @@ class App extends Component {
           show={this.state.modalShow}
           onHide={modalClose}
         />
-        <Main actions={this.actions} categories={this.state.categories} subCategories={this.state.subCategories} attendees={this.state.attendees} user={this.state.user}/>
+        <Main actions={this.actions} categories={this.state.categories} subCategories={this.state.subCategories}  profile={this.state.attendee}attendees={this.state.attendees} user={this.state.user}/>
         <div className="footer-fantom"></div>
         <Footer/>
       </div>

@@ -5,9 +5,15 @@ import Card from 'react-bootstrap/Card';
 class CardContact extends Component {
 
   render(){
-    const attendee = this.props.attendee;
+    let userInfo = null;
+    if (this.props.attendee) {
+      userInfo = this.props.attendee;
+    }
+    if (this.props.profile) {
+      userInfo = this.props.profile;
+    }
 
-    if(attendee.last_name){
+    if(userInfo.last_name){
       return (
         <Accordion>
         <Card>
@@ -16,9 +22,9 @@ class CardContact extends Component {
           </Accordion.Toggle>
           <Accordion.Collapse eventKey="0">
             <Card.Body>
-              {attendee.position} <br/>
-              {attendee.company} <br/>
-              {attendee.email}
+              {userInfo.position} <br/>
+              {userInfo.company} <br/>
+              {userInfo.email_address}
             </Card.Body>
           </Accordion.Collapse>
         </Card>

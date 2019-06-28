@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import CardShared from '../../Common/Partials/CardShared.jsx';
+import BasicCard from '../../Common/BasicCard.jsx';
+import ConnectedCard from '../../Common/ConnectedCard.jsx';
+import SharedCard from '../../Common/SharedCard.jsx';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Categories from './Categories.jsx';
@@ -14,17 +16,17 @@ class ProfilePage extends Component {
 
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
           <Tab eventKey="home" title="Basic">
-            Card Basic Profile Here!
+            <BasicCard profile={this.props.profile}/>
           </Tab>
 
 
           <Tab eventKey="profile" title="Connected"> 
-            Card Connected Profile Here!
+            <ConnectedCard profile={this.props.profile}/>
           </Tab>
 
 
           <Tab eventKey="topics" title="Shared">
-            <CardShared user={this.props.user}/>
+            <SharedCard profile={this.props.profile}/>
           </Tab>
         </Tabs>
 
