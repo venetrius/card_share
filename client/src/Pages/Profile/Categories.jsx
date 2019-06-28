@@ -15,22 +15,33 @@ class Categories extends Component {
         {categories.map((category) => (
         <Card>
           <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey="0">
-              {category.name}
-            </Accordion.Toggle>           
+              <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                {category.name}
+              </Accordion.Toggle>          
           </Card.Header>
+
           <Accordion.Collapse eventKey="0">
             <Card.Body>
-              {subCategories.filter((subCategory) => subCategory.category_id === category.id).map(subCategory => (
+              <Row>
+                  <Col xs={6} md={6}> 
+                  </Col>
+                  <Col xs={3} md={3}>
+                    <Form.Text>Wants</Form.Text>
+                  </Col>
+                  <Col xs={3} md={3}>
+                    <Form.Text>Haves</Form.Text>                     
+                  </Col>
+                </Row>
+              {subCategories.filter((subCategory) => subCategory.category_id === category.id).map(subCategory => (             
                 <Row>
                   <Col xs={6} md={6}>
                     {subCategory.name}
                   </Col>
                   <Col xs={3} md={3}>
-                      <Form.Check inline label="Wants" id={`inline-${'checkbox'}-1`} />
+                      <Form.Check inline id={`inline-${'checkbox'}-1`} />
                   </Col>
                   <Col xs={3} md={3}>
-                      <Form.Check inline label="Haves" id={`inline-${'checkbox'}-2`} />                      
+                      <Form.Check inline id={`inline-${'checkbox'}-2`} />                      
                   </Col>
                 </Row>
               ))}
