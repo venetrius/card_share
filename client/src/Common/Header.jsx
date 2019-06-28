@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import { Navbar} from 'react-bootstrap';
 import OAuth from './Oauth.jsx'
 
@@ -27,11 +29,19 @@ class Header extends Component {
   render(){
     return (
       <Navbar bg="light" sticky="top">
-        <p>Event Title</p>
-       {this.getOauth()}
-        <span onClick={this.props.showNotifications} id="notification-button" className="fa-stack fa-2x has-badge" data-count="4">
-          <i className="fa fa-bell fa-stack-1x xfa-inverse" data-count="4b"></i>
-        </span>
+
+          <Col xs={6} md={6}>
+            <p>Event Title</p>
+          </Col>
+          <Col xs={3} md={3}>
+            <span onClick={this.props.showNotifications} id="notification-button" className="fa-stack fa-2x has-badge" data-count="4">
+              <i className="fa fa-bell fa-stack-1x xfa-inverse" data-count="4b"></i>
+            </span>
+          </Col>
+          <Col xs={3} md={3}>
+            {this.getOauth()}
+          </Col>
+
       </Navbar>
     );
   }
