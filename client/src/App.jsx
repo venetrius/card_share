@@ -53,7 +53,6 @@ class App extends Component {
   
   render(){
     let modalClose = () => this.setState({ modalShow: false });
-    console.log("From App: ", this.state.profile);
     return (
       <div>
         <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()} event={this.state.event}/>
