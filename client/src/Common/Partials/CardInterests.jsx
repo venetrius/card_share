@@ -5,13 +5,19 @@ import ListGroup from 'react-bootstrap/ListGroup'
 class CardInterests extends Component {
 
   render(){
-    const attendee = this.props.attendee;
+    let userInfo = null;
+    if (this.props.attendee) {
+      userInfo = this.props.attendee;
+    }
+    if (this.props.profile) {
+      userInfo = this.props.profile;
+    }
 
     return (
       <Container>
         <ListGroup>
-          <ListGroup.Item>Haves {attendee.haves}</ListGroup.Item>
-          <ListGroup.Item>Wants {attendee.wants}</ListGroup.Item>
+          <ListGroup.Item>Haves {userInfo.haves}</ListGroup.Item>
+          <ListGroup.Item>Wants {userInfo.wants}</ListGroup.Item>
         </ListGroup>
       </Container>
     );
