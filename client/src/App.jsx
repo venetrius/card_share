@@ -5,6 +5,7 @@ import Header from './Common/Header.jsx';
 import Main from './Main.jsx';
 import Notifications from './Common/Notifications.jsx';
 const socketEvents = require('./socket/events');
+const socketActions = require('./socket/actions');
 
 class App extends Component {
   constructor() {
@@ -16,8 +17,12 @@ class App extends Component {
       user : null,
       event : {id : 1000001}
     };
-    this.showNotifications=this.showNotifications.bind(this)
+    let actions = socketActions(this)
+    for(let action in actions){
+      this[action]=actions[action].bind(this)
+    }
   }
+
 
   sendAlert(msg){
     alert(msg);
@@ -38,57 +43,9 @@ class App extends Component {
     this.setState({connection : connection});
   }
 
-  getUser(){
-    this.state.connection.emit('get_user','1000001');
-  }
-
-  connectWith(user_id){
-    this.state.connection.emit('request_connection',user_id);
-  }
-
-  getCategories(){
-    this.state.connection.emit('get_categories','1000001');
-  }
-
-  getAttendees(){
-    this.state.connection.emit('get_attendees',1000001);
-  }
-
-  requestConnection(){
-    this.state.connection.emit('request_connection', 6);
-  }
   
-  acceptConnection(){
-    this.state.connection.emit('accept_connection',1000001);
-  }
-
-  ignoreConnection(){
-    this.state.connection.emit('ignore_connection', 7);
-  }
-
-  sendCard(){
-    this.state.connection.emit('send_card', 6);
-  }
-  
-  saveCard(){
-    this.state.connection.emit('save_card', 7);
-  }
-
-  deleteCard(){
-    this.state.connection.emit('delete_card', 6);
-  }
-
-  logOut(){
-    this.state.connection.emit('log_out','');
-  }
-
-  showNotifications(){
-    this.setState({ modalShow: true })
-  }
-
   render(){
     let modalClose = () => this.setState({ modalShow: false });
-    console.log(this.state.categories)
     return (
       <div>
         <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()} event={this.state.event}/>
