@@ -8,6 +8,14 @@ module.exports = function(knex){
     .asCallback(cb)
   }
 
+  function getAttendeeById(attendee_id, cb){
+    knex.select('*')
+    .from('attendees')
+    .where('id', attendee_id)
+    .first()
+    .asCallback(cb)
+  }
+
   function createAttendee(profile, cb) {
     knex('attendees')
     .insert([profile])
@@ -188,7 +196,8 @@ module.exports = function(knex){
     createCardShareIfNotExist,
     changeCardShareStatus,
     findOrCreateAttendee,
-    getRelationships
+    getRelationships,
+    getAttendeeById
   }  
 }
 
