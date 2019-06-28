@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import socketIOClient from "socket.io-client";
-import Footer from './Common/Footer.jsx';
+import Footer from './Common/Footer-mui.jsx';
 import Header from './Common/Header.jsx';
 import Main from './Main.jsx';
 import Notifications from './Common/Notifications.jsx';
@@ -63,6 +63,7 @@ class App extends Component {
           onHide={modalClose}
         />
         <Main actions={this.actions} categories={this.state.categories} subCategories={this.state.subCategories} attendees={this.state.attendees} user={this.state.user}/>
+        <div className="footer-fantom"></div>
         <Footer/>
       </div>
     );
