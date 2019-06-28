@@ -51,7 +51,7 @@ class BusinessCard extends Component {
         </Card.Body>
 
         <Card.Footer>
-          <CardActions attendee={attendee}/>
+          <CardActions actions={this.props.actions} attendee={attendee}/>
         </Card.Footer>
       </Card>
     );

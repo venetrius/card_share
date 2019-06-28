@@ -14,7 +14,8 @@ class NetworkPage extends Component {
           {Object.keys(attendees).map((attendee_key) => (
             <BusinessCard
             attendee={attendees[attendee_key]}
-            key={ attendees[attendee_key].id }/>
+            key={ attendees[attendee_key].id }
+            actions={this.props.actions}/>
           ))}
 
         </CardDeck>

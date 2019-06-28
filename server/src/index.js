@@ -40,6 +40,7 @@ io.on('connection', function(socket){
   if(socket.handshake.session.type === 'attendee'){
     // register attendee in model -> ability send real time notifications
     model.register(socket.handshake.session[0].id, socket.id);
+    socket.emit('is_authorized', true);
   } 
   let eventHandlers = getEventHandlers(io, model)
   for (var key in eventHandlers) {

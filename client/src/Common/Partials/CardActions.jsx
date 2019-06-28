@@ -3,18 +3,18 @@ import Button from 'react-bootstrap/Button'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 
 
-function connectionActions(attendee_id, connection) {
+function connectionActions(attendee_id, connection, actions) {
   if (!connection) {
     return (
-      <Button variant="outline-success" size="sm">Connect</Button>
+      <Button onClick={() => actions.requestConnection(attendee_id)} variant="outline-success" size="sm">Connect</Button>
     );
   } else if(connection.status == 'CONNECTED') {
     return (<span>CONNECTED</span>);
   } else if(attendee_id == connection.sender) {
     return (
       <ButtonToolbar>
-        <Button variant="outline-success" size="sm">Accept</Button>
-        <Button variant="outline-danger" size="sm">Ignore</Button>
+        <Button onClick={() => actions.acceptConnection(attendee_id)} variant="outline-success" size="sm">Accept</Button>
+        <Button onClick={() => actions.ignoreConnection(attendee_id)} variant="outline-danger" size="sm">Ignore</Button>
       </ButtonToolbar>
     )
   } else {
@@ -23,28 +23,28 @@ function connectionActions(attendee_id, connection) {
 }
 
 
-function cardActionsSend(attendee_id, cards) {
+function cardActionsSend(attendee_id, cards, actions) {
   if (!cards || cards.to !== 'SENT') {
     return (
-      <Button variant="outline-success" size="sm">Send Card</Button>
+      <Button onClick={() => actions.sendCard(attendee_id)} variant="outline-success" size="sm">Send Card</Button>
     );
     
   }
 }
 
-function cardActionsRecieved(attendee_id, cards) {
+function cardActionsRecieved(attendee_id, cards, actions) {
   if (cards){
     const from = cards.from;
     if(from == 'PENDING') {
       return (
         <ButtonToolbar>
-        <Button variant="outline-success" size="sm">Save</Button>
-        <Button variant="outline-danger" size="sm">Delete</Button>
+        <Button onClick={() => actions.saveCard(attendee_id)} variant="outline-success" size="sm">Save</Button>
+        <Button onClick={() => actions.deleteCard(attendee_id)} variant="outline-danger" size="sm">Delete</Button>
       </ButtonToolbar>
       );
     } else if (cards.from == 'SAVED') {
       return (
-        <Button variant="outline-success" size="sm">Delete</Button>
+        <Button onClick={() => actions.deleteCard(attendee_id)} variant="outline-success" size="sm">Delete</Button>
       )
     }
   }
@@ -56,12 +56,12 @@ class CardActions extends Component {
 
   render(){
     const attendee = this.props.attendee;
-
+    const actions = this.props.actions;
     return (
       <ButtonToolbar>
-        {cardActionsSend(attendee.id, attendee.cards)}
-        {cardActionsRecieved(attendee.id, attendee.cards)}
-        {connectionActions(attendee.id, attendee.connection)}
+        {cardActionsSend(attendee.id, attendee.cards, actions)}
+        {cardActionsRecieved(attendee.id, attendee.cards, actions)}
+        {connectionActions(attendee.id, attendee.connection, actions)}
       </ButtonToolbar>
     );
   }

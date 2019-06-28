@@ -1,8 +1,18 @@
 module.exports = function(App) {
   return {
 
+    initData(){
+      this.getUser();
+      this.getCategories();
+      this.getAttendees();
+    },
+
     getUser(){
       App.state.connection.emit('get_user','1000001');
+    },
+
+    getAttendee(){
+      App.state.connection.emit('get_attendee','');
     },
   
     connectWith(user_id){
@@ -17,28 +27,28 @@ module.exports = function(App) {
       App.state.connection.emit('get_attendees',1000001);
     },
   
-    requestConnection(){
-      App.state.connection.emit('request_connection', 6);
+    requestConnection(attendee_id){
+      App.state.connection.emit('request_connection', attendee_id);
     },
     
-    acceptConnection(){
-      App.state.connection.emit('accept_connection',1000001);
+    acceptConnection(attendee_id){
+      App.state.connection.emit('accept_connection',attendee_id);
     },
   
-    ignoreConnection(){
-      App.state.connection.emit('ignore_connection', 7);
+    ignoreConnection(attendee_id){
+      App.state.connection.emit('ignore_connection', attendee_id);
     },
   
-    sendCard(){
-      this.state.connection.emit('send_card', 6);
+    sendCard(attendee_id){
+      App.state.connection.emit('send_card', attendee_id);
     },
     
-    saveCard(){
-      this.state.connection.emit('save_card', 7);
+    saveCard(attendee_id){
+      App.state.connection.emit('save_card', attendee_id);
     },
   
-    deleteCard(){
-      this.state.connection.emit('delete_card', 6);
+    deleteCard(attendee_id){
+      App.state.connection.emit('delete_card', attendee_id);
     },
   
     logOut(){
@@ -47,6 +57,24 @@ module.exports = function(App) {
   
     showNotifications(){
       this.setState({ modalShow: true });
+    },
+
+    loadDataIfLoggedIn(){
+      if(! (App.state.connection && App.state.loggedIn)){
+        return;
+      }
+      if(! App.state.user){
+        App.getUser();
+      }
+      if(! App.state.attendee){
+        App.getAttendee();
+      }
+      if(! App.state.attendees){
+        App.getAttendees();
+      }
+      if(! (this.state.categories && this.state.subCategories) ){
+        App.getCategories();
+      }
     }
   }
 }

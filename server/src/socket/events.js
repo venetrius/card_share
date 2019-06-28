@@ -9,6 +9,11 @@ module.exports = function (io, model){
 const applyConnection = function (connection, attendee_id, attendeesMap){
   const isISent = connection.requester_id === attendee_id;
   if(isISent){
+    if(! attendeesMap[connection.responder_id]){
+      // TODO only occour if sender == receiver
+      console.log('error in applyConnection', connection);
+      return;
+    }
     const conn = {
       sender : attendee_id,
       status : connection.status === 'CONNECTED' ?  'CONNECTED' : 'SENT'
@@ -27,6 +32,11 @@ const applyConnection = function (connection, attendee_id, attendeesMap){
 const applyCardShares = function (cardShare, attendee_id, attendeesMap){
   const ifISent = cardShare.sender_id === attendee_id;
   if(ifISent){
+    if(! attendeesMap[cardShare.receiver_id]){
+      // TODO only occour if sender == receiver
+      console.log('error in applyCardShares', cardShare);
+      return;
+    }
     const cards = attendeesMap[cardShare.receiver_id].cards ? attendeesMap[cardShare.receiver_id].cards : {};
     cards.to = 'SENT';
     attendeesMap[cardShare.receiver_id].cards = cards;
@@ -197,6 +207,22 @@ const get_attendees = function(messageIn) {
   })
 };
 
+
+const get_attendee = function() {
+  const socket = this;
+  const attendee_id = loadAttendeeId(socket, 'attendee');
+  if( ! attendee_id) {return}
+  dataHelpers.getAttendeeById(attendee_id,function(err, attendee){
+    let message;
+    if(err || ! attendee){
+      message = {error : 'error please try again later'};
+    }else{
+      message = attendee;
+    }
+    socket.emit('attendee', JSON.stringify(message));
+  })
+};
+
 // ----------------------------------------------
 //              CARD EVENTS
 // ----------------------------------------------
@@ -287,6 +313,7 @@ const delete_card = function(incoming_message){
     ignore_connection,
     send_card,
     save_card,
-    delete_card
+    delete_card,
+    get_attendee
   };
 }
