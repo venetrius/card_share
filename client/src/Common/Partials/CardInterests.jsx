@@ -10,8 +10,8 @@ class CardInterests extends Component {
     return (
       <Container>
         <ListGroup>
-          <ListGroup.Item>Haves {attendee.haves[0]}</ListGroup.Item>
-          <ListGroup.Item>Wants {attendee.wants[0]}</ListGroup.Item>
+          <ListGroup.Item>Haves {attendee.haves}</ListGroup.Item>
+          <ListGroup.Item>Wants {attendee.wants}</ListGroup.Item>
         </ListGroup>
       </Container>
     );
