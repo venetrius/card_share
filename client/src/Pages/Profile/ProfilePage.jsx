@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CardShared from '../../Common/Partials/CardShared.jsx';
+import SharedCard from '../../Common/SharedCard.jsx';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Categories from './Categories.jsx';
@@ -24,7 +24,7 @@ class ProfilePage extends Component {
 
 
           <Tab eventKey="topics" title="Shared">
-            <CardShared attendee={this.props.attendee}/>
+            <SharedCard profile={this.props.profile}/>
           </Tab>
         </Tabs>
 

@@ -9,52 +9,52 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 
-class BusinessCard extends Component {
+class SharedCard extends Component {
 
   render(){
-    const attendee = this.props.attendee;
-    console.log(attendee)
+    const profile = this.props.profile;
+    console.log(profile)
     return (
       <Card>
         <Card.Header>
           <Card.Title>
-            {attendee.first_name} {attendee.last_name}
+            {profile.first_name} {profile.last_name}
           </Card.Title>
-          {/* <CardIcons attendee={attendee}/> */}
+          {/* <CardIcons profile={profile}/> */}
         </Card.Header>
 
         <Card.Body>
           <Container>
             <Row>
               <Col xs={4} md={4}>
-                <Image src={attendee.photo} rounded width={120} height={120} alt="120x120"/>
+                <Image src={profile.photo} rounded width={120} height={120} alt="120x120"/>
               </Col>
               <Col xs={8} md={8}>
                 Attendee Interests
-                {/* <CardInterests attendee={attendee}/> */}
+                {/* <CardInterests profile={profile}/> */}
               </Col>
             </Row>
           </Container>
 
           Attendee Contact Info
-          {/* <CardContact attendee={attendee}/> */}
+          {/* <CardContact profile={profile}/> */}
 
           <Card.Text>
             Attendee Tagline
-            {/* {attendee.tagline} */}
+            {profile.tagline}
           </Card.Text>
 
         </Card.Body>
 
         <Card.Footer>
-          {/* <CardActions attendee={attendee}/> */}
+          {/* <CardActions profile={profile}/> */}
         </Card.Footer>
       </Card>
     );
   }
 }
 
-export default BusinessCard;
+export default SharedCard;
 
 
 // "id":1000003

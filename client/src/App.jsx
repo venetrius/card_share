@@ -53,7 +53,7 @@ class App extends Component {
   
   render(){
     let modalClose = () => this.setState({ modalShow: false });
-    console.log(this.state.attendee);
+    console.log("From App: ", this.state.profile);
     return (
       <div>
         <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()} event={this.state.event}/>
@@ -63,7 +63,7 @@ class App extends Component {
           show={this.state.modalShow}
           onHide={modalClose}
         />
-        <Main actions={this.actions} categories={this.state.categories} subCategories={this.state.subCategories} attendee={this.state.attendee} attendees={this.state.attendees} user={this.state.user}/>
+        <Main actions={this.actions} categories={this.state.categories} subCategories={this.state.subCategories} profile={this.state.attendee} attendees={this.state.attendees} user={this.state.user}/>
         <Footer/>
       </div>
     );
