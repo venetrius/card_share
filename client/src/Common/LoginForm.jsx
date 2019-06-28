@@ -28,7 +28,7 @@ class LoginForm extends Component {
               <Row>
                 <Col xs={9} md={9}>
                   <Card.Title>
-                    Bri Brilast
+                    {user.first_name} {user.last_name}
                   </Card.Title>
                 </Col>
                 <Col xs={3} md={3}>

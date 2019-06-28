@@ -64,7 +64,7 @@ class App extends Component {
           onHide={modalClose}
         />
 
-        <Main categories={this.state.categories} subCategories={this.state.subCategories} attendees={this.state.attendees}/>
+        <Main categories={this.state.categories} subCategories={this.state.subCategories} attendees={this.state.attendees} user={this.state.user}/>
         <div className="footer-fantom"></div>
         <Footer/>
       </div>

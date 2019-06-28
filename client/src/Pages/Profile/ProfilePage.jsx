@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import BusinessCard from '../../Common/BusinessCard.jsx';
-import CardDeck from 'react-bootstrap/CardDeck';
+import CardShared from '../../Common/Partials/CardShared.jsx';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import Categories from './Categories.jsx';
 
 class ProfilePage extends Component {
@@ -10,11 +11,22 @@ class ProfilePage extends Component {
     return (
       <div>
         Hello from the ProfilePage!!
-        <CardDeck>
-          <BusinessCard/>
-          <BusinessCard/>
-          <BusinessCard/>
-        </CardDeck>
+
+        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+          <Tab eventKey="home" title="Basic">
+            Card Basic Profile Here!
+          </Tab>
+
+
+          <Tab eventKey="profile" title="Connected"> 
+            Card Connected Profile Here!
+          </Tab>
+
+
+          <Tab eventKey="topics" title="Shared">
+            <CardShared user={this.props.user}/>
+          </Tab>
+        </Tabs>
 
         <div>
           <Categories categories={this.props.categories} subCategories={this.props.subCategories} />
