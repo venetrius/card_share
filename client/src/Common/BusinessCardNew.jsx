@@ -13,16 +13,36 @@ class BusinessCard extends Component {
 
   render(){
     const attendee = this.props.attendee;
-    console.log(attendee)
+
+    function cardHeader() {
+      if (attendee.first_name) {
+        return (
+          <Card.Header>
+            <Card.Title>
+              {attendee.first_name} {attendee.last_name}
+            </Card.Title>
+            <CardIcons attendee={attendee}/>
+          </Card.Header>
+      ); 
+      }
+    }
+
+    function cardHeader() {
+      if (attendee.first_name) {
+        return (
+          <Card.Header>
+            <Card.Title>
+              {attendee.first_name} {attendee.last_name}
+            </Card.Title>
+            <CardIcons attendee={attendee}/>
+          </Card.Header>
+      ); 
+      }
+    }
+
     return (
       <Card>
-        <Card.Header>
-          <Card.Title>
-            {attendee.first_name} {attendee.last_name}
-          </Card.Title>
-          <CardIcons attendee={attendee}/>
-        </Card.Header>
-
+        {cardHeader()}
         <Card.Body>
           <Container>
             <Row>
