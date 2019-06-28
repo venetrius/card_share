@@ -27,8 +27,8 @@ module.exports = function(App) {
       App.state.connection.emit('get_attendees',1000001);
     },
   
-    requestConnection(){
-      App.state.connection.emit('request_connection', 6);
+    requestConnection(attendee_id){
+      App.state.connection.emit('request_connection', attendee_id);
     },
     
     acceptConnection(attendee_id){
