@@ -9,6 +9,11 @@ module.exports = function (io, model){
 const applyConnection = function (connection, attendee_id, attendeesMap){
   const isISent = connection.requester_id === attendee_id;
   if(isISent){
+    if(! attendeesMap[connection.responder_id]){
+      // TODO only occour if sender == receiver
+      console.log('error in applyConnection', connection);
+      return;
+    }
     const conn = {
       sender : attendee_id,
       status : connection.status === 'CONNECTED' ?  'CONNECTED' : 'SENT'
@@ -27,6 +32,11 @@ const applyConnection = function (connection, attendee_id, attendeesMap){
 const applyCardShares = function (cardShare, attendee_id, attendeesMap){
   const ifISent = cardShare.sender_id === attendee_id;
   if(ifISent){
+    if(! attendeesMap[cardShare.receiver_id]){
+      // TODO only occour if sender == receiver
+      console.log('error in applyCardShares', cardShare);
+      return;
+    }
     const cards = attendeesMap[cardShare.receiver_id].cards ? attendeesMap[cardShare.receiver_id].cards : {};
     cards.to = 'SENT';
     attendeesMap[cardShare.receiver_id].cards = cards;
