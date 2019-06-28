@@ -10,6 +10,8 @@ function connectionActions(attendee_id, connection, actions) {
     );
   } else if(connection.status == 'CONNECTED') {
     return (<span>CONNECTED</span>);
+  } else if(connection.status == 'DECLINED') {
+    return (<span>DECLINED</span>);
   } else if(attendee_id == connection.sender) {
     return (
       <ButtonToolbar>

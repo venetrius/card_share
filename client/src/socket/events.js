@@ -1,3 +1,14 @@
+/*********************
+ * Helper Function   *
+ ********************/
+
+const getOtherAttendeeId = function(incomeingId1, incomeingId2, id){
+  if(id === incomeingId1){
+    return incomeingId2
+  }
+  return incomeingId1;
+}
+
 function eventHandlers(App) {
   return {
 
@@ -19,7 +30,6 @@ function eventHandlers(App) {
     attendees : function(msg){
       App.sendAlert(msg);
       msg=JSON.parse(msg);
-      console.log(msg);
       App.setState({attendees : msg})
     },
     
@@ -30,7 +40,18 @@ function eventHandlers(App) {
     },
 
     connection_change : function(msg){
-      App.sendAlert(msg)
+      const notification = JSON.parse(msg);
+      if(notification.error){
+        alert(msg);
+        return;
+      }
+      const {requester_id, responder_id, status} = notification
+      const otherAttendeeId = getOtherAttendeeId(requester_id, responder_id, App.state.attendee.id) 
+      const attendees = App.state.attendees;
+      if(attendees[otherAttendeeId]){
+        attendees[otherAttendeeId].connection = {sender : requester_id, status : status};
+      }
+      App.setState({attendees});
     },
 
     cardshare_change : function(msg){

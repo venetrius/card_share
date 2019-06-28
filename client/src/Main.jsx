@@ -8,8 +8,6 @@ import Contacts from './Pages/Contacts/Contacts.jsx';
 
 class Main extends Component {
   render(){
-    console.log(this.props.categories)
-    console.log(this.props.subCategories)
     return (
     
       <main style={{ minHeight: '70vh' }}>
