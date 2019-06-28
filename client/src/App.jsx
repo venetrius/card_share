@@ -57,15 +57,6 @@ class App extends Component {
       <div>
         <Header showNotifications={this.showNotifications} socket={this.state.connection} user={this.state.user} logOut={() =>this.logOut()} event={this.state.event}/>
         <button onClick={() => this.initData() } > Get ALL </button>
-        <button onClick={() => this.getUser() } > User details </button>
-        <button onClick={() => this.getCategories() } > Categories </button>
-        <button onClick={() => this.getAttendees() } > Attendees </button>
-        <button onClick={() => this.requestConnection() } > Connect </button>
-        <button onClick={() => this.acceptConnection() } > AcceptConnection </button>
-        <button onClick={() => this.ignoreConnection() } > IgnoreConnection </button>
-        <button onClick={() => this.sendCard() } > sendCard </button>
-        <button onClick={() => this.saveCard() } > saveCard </button>
-        <button onClick={() => this.deleteCard() } > deleteCard </button>
 
         <Notifications
           show={this.state.modalShow}
