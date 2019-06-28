@@ -180,7 +180,7 @@ const get_attendees = function(messageIn) {
   const socket = this;
   const attendee_id = loadAttendeeId(socket, 'attendees');
   if( ! attendee_id) {return}
-  const event_id =  incoming_message;
+  const event_id =  messageIn;
   dataHelpers.getAttendees(event_id,function(err, attendees){
     let message;
     if(err){
