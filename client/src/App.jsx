@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import socketIOClient from "socket.io-client";
-import Footer from './Common/Footer.jsx';
+import Footer from './Common/Footer-mui.jsx';
 import Header from './Common/Header.jsx';
 import Main from './Main.jsx';
 import Notifications from './Common/Notifications.jsx';
