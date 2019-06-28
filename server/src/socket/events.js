@@ -277,8 +277,8 @@ const send_card = function(message){
     }else{
       message = cardShare;
     }
-    sendNotificationIfOnline(receiver_id, 'connection_change', message);
-    socket.emit('connection_change', JSON.stringify(message));
+    sendNotificationIfOnline(receiver_id, 'cardshare_change', message);
+    socket.emit('cardshare_change', JSON.stringify(message));
   })
 };
 

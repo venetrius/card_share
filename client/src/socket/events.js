@@ -55,7 +55,28 @@ function eventHandlers(App) {
     },
 
     cardshare_change : function(msg){
-      App.sendAlert(msg)
+      const notification = JSON.parse(msg);
+      if(notification.error){
+        alert(msg);
+        return;
+      }
+      const attendees = App.state.attendees;
+      const {sender_id, receiver_id, status} = notification
+      if(App.state.attendee.id === sender_id){
+        if(attendees[receiver_id]){
+          let cards = attendees[receiver_id].cards ? attendees[receiver_id].cards : {};
+          cards.to = 'SENT';
+          attendees[receiver_id].cards = cards;
+        }
+      }else{
+        if(attendees[sender_id]){
+          let cards = attendees[sender_id].cards ? attendees[sender_id].cards : {};
+          cards.from= status;
+          attendees[sender_id].cards = cards;
+        }
+      }
+      console.log(App.state.attendees)
+      App.setState({attendees});
     },
 
     profile : function(msg){
