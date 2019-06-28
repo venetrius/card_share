@@ -16,13 +16,13 @@ class Main extends Component {
         <Switch>
           {/* <Route exact path="/" component={Home} /> */}
           <Route path="/profile" render={(routeProps) => (
-            <ProfilePage {...routeProps} categories={this.props.categories} subCategories={this.props.subCategories}/>
+            <ProfilePage {...routeProps} categories={this.props.categories} subCategories={this.props.subCategories} user={this.props.user}/>
           )}/>
           <Route path="/network" render={(routeProps) => (
             <NetworkPage {...routeProps} attendees={this.props.attendees}/>
           )}/>
           <Route path="/messages" render={(routeProps) => (
-            <MessagePage {...routeProps} categories={this.props.categories} subCategories={this.props.subCategories}/>
+            <MessagePage {...routeProps} categories={this.props.categories} subCategories={this.props.subCategories} user={this.props.user}/>
           )}/>
           <Route path="/contacts" component={Contacts} />
         </Switch>

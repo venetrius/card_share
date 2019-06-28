@@ -11,7 +11,7 @@ class MessagesPage extends Component {
 
         Temp Storage for Login Form!
         <Container>
-          <LoginForm categories={this.props.categories} subCategories={this.props.subCategories} />
+          <LoginForm categories={this.props.categories} subCategories={this.props.subCategories} user={this.props.user}/>
         </Container>
       </div>
     );
