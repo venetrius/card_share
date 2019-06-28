@@ -31,7 +31,7 @@ class Header extends Component {
       <Navbar bg="light" sticky="top">
 
           <Col xs={6} md={6}>
-            <p>Event Title</p>
+            <p>Lighthouse Labs Demo Day</p>
           </Col>
           <Col xs={3} md={3}>
             <span onClick={this.props.showNotifications} id="notification-button" className="fa-stack fa-2x has-badge" data-count="4">
