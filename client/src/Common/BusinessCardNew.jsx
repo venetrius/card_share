@@ -27,19 +27,6 @@ class BusinessCard extends Component {
       }
     }
 
-    function cardHeader() {
-      if (attendee.first_name) {
-        return (
-          <Card.Header>
-            <Card.Title>
-              {attendee.first_name} {attendee.last_name}
-            </Card.Title>
-            <CardIcons attendee={attendee}/>
-          </Card.Header>
-      ); 
-      }
-    }
-
     return (
       <Card>
         {cardHeader()}
