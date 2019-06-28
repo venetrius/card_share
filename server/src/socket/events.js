@@ -207,6 +207,22 @@ const get_attendees = function(messageIn) {
   })
 };
 
+
+const get_attendee = function() {
+  const socket = this;
+  const attendee_id = loadAttendeeId(socket, 'attendee');
+  if( ! attendee_id) {return}
+  dataHelpers.getAttendeeById(attendee_id,function(err, attendee){
+    let message;
+    if(err || ! attendee){
+      message = {error : 'error please try again later'};
+    }else{
+      message = attendee;
+    }
+    socket.emit('attendee', JSON.stringify(message));
+  })
+};
+
 // ----------------------------------------------
 //              CARD EVENTS
 // ----------------------------------------------
@@ -297,6 +313,7 @@ const delete_card = function(incoming_message){
     ignore_connection,
     send_card,
     save_card,
-    delete_card
+    delete_card,
+    get_attendee
   };
 }
