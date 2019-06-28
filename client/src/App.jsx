@@ -55,27 +55,27 @@ class App extends Component {
   }
 
   requestConnection(){
-    this.state.connection.emit('request_connection',{requester_id : 7, responder_id : 6});
+    this.state.connection.emit('request_connection', 6);
   }
   
   acceptConnection(){
-    this.state.connection.emit('accept_connection',{requester_id : 1000001, responder_id : 1000003});
+    this.state.connection.emit('accept_connection',1000001);
   }
 
   ignoreConnection(){
-    this.state.connection.emit('ignore_connection',{requester_id : 1000001, responder_id : 1000003});
+    this.state.connection.emit('ignore_connection', 7);
   }
 
   sendCard(){
-    this.state.connection.emit('send_card',{sender_id : 1000001, receiver_id : 1000003});
+    this.state.connection.emit('send_card', 6);
   }
   
   saveCard(){
-    this.state.connection.emit('save_card',{sender_id : 1000001, receiver_id : 1000003});
+    this.state.connection.emit('save_card', 7);
   }
 
   deleteCard(){
-    this.state.connection.emit('delete_card',{sender_id : 1000001, receiver_id : 1000003});
+    this.state.connection.emit('delete_card', 6);
   }
 
   logOut(){

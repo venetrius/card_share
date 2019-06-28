@@ -136,6 +136,16 @@ const sendNotificationIfOnline = function(attendeeID, messageType, message){
   }
 }
 
+const loadAttendeeId = function(socket, event){
+  let attendeeId;
+  if(socket.handshake.session.type === 'attendee'){
+    attendeeId =  socket.handshake.session[0].id;
+  } 
+  if( ! attendeeId) {
+    socket.emit(event, JSON.stringify({error : 'unauthorized'}));
+  }
+  return attendeeId
+}
 /**
  * 
  */
@@ -167,8 +177,10 @@ const get_user = function(id){
 
 
 const get_attendees = function(messageIn) {
-  const {event_id, attendee_id} =  messageIn;
   const socket = this;
+  const attendee_id = loadAttendeeId(socket, 'attendees');
+  if( ! attendee_id) {return}
+  const event_id =  incoming_message;
   dataHelpers.getAttendees(event_id,function(err, attendees){
     let message;
     if(err){
@@ -191,7 +203,9 @@ const get_attendees = function(messageIn) {
 
 const request_connection = function(message){
   const socket = this;
-  const {requester_id, responder_id} =  message;
+  const requester_id = loadAttendeeId(socket, 'connection_change');
+  if( ! requester_id) {return}
+  const responder_id =  message;
   dataHelpers.createConnectionIfNotExist(requester_id, responder_id,function(err, connections){
     let message;
     if(err){
@@ -207,7 +221,9 @@ const request_connection = function(message){
 
 const accept_connection = function(incoming_message){
   const socket = this;
-  const {requester_id, responder_id} =  incoming_message;
+  const responder_id = loadAttendeeId(socket, 'connection_change');
+  if( ! responder_id) {return}
+  const requester_id =  incoming_message;
   const forward = {estination: requester_id}
   dataHelpers.changeConnectionStatus(requester_id, responder_id,
      'CONNECTED', getConnectionChangeCb(this, requester_id, true))
@@ -215,14 +231,18 @@ const accept_connection = function(incoming_message){
 
 const ignore_connection = function(incoming_message){
   const socket = this;
-  const {requester_id, responder_id} =  incoming_message;
+  const responder_id = loadAttendeeId(socket, 'connection_change');
+  if( ! responder_id) {return}
+  const requester_id =  incoming_message;
   dataHelpers.changeConnectionStatus(requester_id, responder_id,
      'DECLINED', getConnectionChangeCb(socket, requester_id, false))
 };
 
 const send_card = function(message){
   const socket = this;
-  const {sender_id, receiver_id} =  message;
+  const sender_id = loadAttendeeId(socket, 'connection_change');
+  if( ! sender_id) {return}
+  const receiver_id =  message;
   dataHelpers.createCardShareIfNotExist(sender_id, receiver_id, function(err, cardShare){
     let message;
     if(err){
@@ -238,13 +258,17 @@ const send_card = function(message){
 
 const save_card = function(incoming_message){
   const socket = this;
-  const {sender_id, receiver_id} =  incoming_message;
+  const receiver_id = loadAttendeeId(socket, 'connection_change');
+  if( ! receiver_id) {return}
+  const sender_id =  incoming_message;
   dataHelpers.changeCardShareStatus(sender_id, receiver_id, 'SAVED', getCardShareChangeCb(this, sender_id))
 };
 
 const delete_card = function(incoming_message){
   const socket = this;
-  const {sender_id, receiver_id} =  incoming_message;
+  const receiver_id = loadAttendeeId(socket, 'connection_change');
+  if( ! receiver_id) {return}
+  const sender_id =  incoming_message;
   dataHelpers.changeCardShareStatus(sender_id, receiver_id, 'DISCARDED', getCardShareChangeCb(socket, sender_id))
 };
 
