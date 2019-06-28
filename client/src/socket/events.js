@@ -7,6 +7,15 @@ function eventHandlers(App) {
       App.setState({user : msg})
     },
 
+    attendee : function(msg){
+      msg=JSON.parse(msg);
+      if( !msg.error){
+        App.setState({attendee : msg})
+      }else{
+        App.sendAlert(msg);
+      }
+    },
+
     attendees : function(msg){
       App.sendAlert(msg);
       msg=JSON.parse(msg);
@@ -26,6 +35,14 @@ function eventHandlers(App) {
 
     cardshare_change : function(msg){
       App.sendAlert(msg)
+    },
+
+    profile : function(msg){
+      App.setState({profile : JSON.parse(msg)});
+    },
+
+    is_authorized : function(msg){
+      App.setState({loggedIn : msg});
     }
   }
 }

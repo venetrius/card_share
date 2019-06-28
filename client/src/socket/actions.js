@@ -10,6 +10,10 @@ module.exports = function(App) {
     getUser(){
       App.state.connection.emit('get_user','1000001');
     },
+
+    getAttendee(){
+      App.state.connection.emit('get_attendee','');
+    },
   
     connectWith(user_id){
       App.state.connection.emit('request_connection',user_id);
@@ -53,6 +57,24 @@ module.exports = function(App) {
   
     showNotifications(){
       this.setState({ modalShow: true });
+    },
+
+    loadDataIfLoggedIn(){
+      if(! (App.state.connection && App.state.loggedIn)){
+        return;
+      }
+      if(! App.state.user){
+        App.getUser();
+      }
+      if(! App.state.attendee){
+        App.getAttendee();
+      }
+      if(! App.state.attendees){
+        App.getAttendees();
+      }
+      if(! (this.state.categories && this.state.subCategories) ){
+        App.getCategories();
+      }
     }
   }
 }

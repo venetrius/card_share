@@ -15,7 +15,10 @@ class App extends Component {
       modalShow: false,
       connection: null,
       user : null,
-      event : {id : 1000001}
+      attendee : null,
+      attendees: null,
+      event : {id : 1000001},
+      loggedIn : false
     };
     let actions = socketActions(this)
     for(let action in actions){
@@ -42,6 +45,9 @@ class App extends Component {
       connection.on(key, eventHandlers[key]);
     }
     this.setState({connection : connection});
+    // try to fech data from the server, but give a connection 0.5 to be initialized
+    setTimeout(App.loadDataIfLoggedIn, 1000);
+    
   }
 
   
