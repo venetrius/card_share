@@ -24,7 +24,7 @@ class ProfilePage extends Component {
 
 
           <Tab eventKey="topics" title="Shared">
-            <CardShared user={this.props.user}/>
+            <CardShared attendee={this.props.attendee}/>
           </Tab>
         </Tabs>
 

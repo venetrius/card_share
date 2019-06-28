@@ -13,13 +13,12 @@ class BusinessCard extends Component {
 
   render(){
     const attendee = this.props.attendee;
-    const user = this.props.user;
     console.log(attendee)
     return (
       <Card>
         <Card.Header>
           <Card.Title>
-            {user.first_name} {user.last_name}
+            {attendee.first_name} {attendee.last_name}
           </Card.Title>
           {/* <CardIcons attendee={attendee}/> */}
         </Card.Header>
@@ -28,7 +27,7 @@ class BusinessCard extends Component {
           <Container>
             <Row>
               <Col xs={4} md={4}>
-                <Image src="https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png" rounded width={120} height={120} alt="120x120"/>
+                <Image src={attendee.photo} rounded width={120} height={120} alt="120x120"/>
               </Col>
               <Col xs={8} md={8}>
                 Attendee Interests
