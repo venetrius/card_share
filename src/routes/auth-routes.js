@@ -47,7 +47,8 @@ router.get('/linkedin/callback', passport.authenticate('linkedin', { session: tr
            res.send('some error, please try again later');
          }else{
            //TODO user to attendee
-           io.in(req.session.socketId).emit('user', JSON.stringify({attendee : attendee[0], userId : req.user.id}));
+           //io.in(req.session.socketId).emit('user', JSON.stringify({attendee : attendee[0], userId : req.user.id}));
+           io.in(req.session.socketId).emit('do', 'RECONNECT');
            attendee.type = 'attendee';
            req.session = attendee;
            res.send(onSucsess);
@@ -55,7 +56,8 @@ router.get('/linkedin/callback', passport.authenticate('linkedin', { session: tr
       }
     );
   }else{
-    io.in(req.session.socketId).emit('user', JSON.stringify(req.user));
+   // io.in(req.session.socketId).emit('user', JSON.stringify(req.user));
+    io.in(req.session.socketId).emit('do', 'RECONNECT');
     req.session = req.user;
     res.send(onSucsess);
   }
