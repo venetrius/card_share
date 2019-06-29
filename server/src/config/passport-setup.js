@@ -20,7 +20,7 @@ const createUserProfile = function(profile){
         photo : profile.photos.length > 0 ? profile.photos[0].value : null,
         first_name: profile.name.givenName,
         last_name: profile.name.familyName,
-        email_address: profile.name.givenName + '@' + profile.name.familyName + '.com',
+        email_address: profile.emails ? profile.emails[0].value : null,
         'linkedin-link':'https://www.linkedin.com'
     }
     return userProfile;
@@ -33,7 +33,8 @@ const setUpLinkedinPassport = function (dataHelpersParam) {
       // options for google strategy
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-      callbackURL: 'http://127.0.0.1:8081/auth/linkedin/callback'
+      callbackURL: 'http://127.0.0.1:8081/auth/linkedin/callback',
+      scope: ['r_emailaddress', 'r_liteprofile']
     }, (accessToken, refreshToken, profile, done) => {
       // passport callback function
       dataHelpers.getUserByToken(
