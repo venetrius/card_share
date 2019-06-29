@@ -156,9 +156,14 @@ const loadAttendeeId = function(socket, event){
   }
   return attendeeId
 }
-/**
- * 
- */
+
+const validateProfile = function(profile){
+  const {email_adress, position, company, phone_number, photo, tagline}  = profile;
+  return {email_adress, position, company, phone_number, photo, tagline};
+}
+/*****************************************************************************-
+ *                        EVENTS
+ *****************************************************************************/
 const get_categories =  function(event_id){
   const socket = this;
   dataHelpers.getCategories(event_id,function(err, categories){
@@ -215,6 +220,23 @@ const get_attendee = function() {
   dataHelpers.getAttendeeById(attendee_id,function(err, attendee){
     let message;
     if(err || ! attendee){
+      message = {error : 'error please try again later'};
+    }else{
+      message = attendee;
+    }
+    socket.emit('attendee', JSON.stringify(message));
+  })
+};
+
+const update_profile = function(msg) {
+  const socket = this;
+  const attendee_id = loadAttendeeId(socket, 'attendee');
+  if( ! attendee_id) {return}
+  const profile = validateProfile(JSON.parse(msg));
+  dataHelpers.updateAttendeeById(attendee_id, profile, function(err, attendee){
+    let message;
+    if(err || ! attendee){
+      console.log('error in update_profile', err)
       message = {error : 'error please try again later'};
     }else{
       message = attendee;
@@ -314,6 +336,7 @@ const delete_card = function(incoming_message){
     send_card,
     save_card,
     delete_card,
-    get_attendee
+    get_attendee,
+    update_profile
   };
 }

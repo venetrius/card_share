@@ -27,6 +27,9 @@ module.exports = function(knex){
           throw err;
         }
         const attendee = attendees[0];
+        if(! attendee){
+          return cb('not found', null);
+        }
         let hash = {};
         attendee.haves.forEach(entry => hash[entry] = entry);
         attendee.haves = Object.keys(hash);
@@ -41,6 +44,14 @@ module.exports = function(knex){
   function createAttendee(profile, cb) {
     knex('attendees')
     .insert([profile])
+    .returning('*')
+    .asCallback(cb);
+  }
+
+  function updateAttendeeById(attendee_id, profile, cb){
+    knex('attendees')
+    .where('id', attendee_id)
+    .update({...profile})
     .returning('*')
     .asCallback(cb);
   }
@@ -219,7 +230,8 @@ module.exports = function(knex){
     changeCardShareStatus,
     findOrCreateAttendee,
     getRelationships,
-    getAttendeeById
+    getAttendeeById,
+    updateAttendeeById
   }  
 }
 
