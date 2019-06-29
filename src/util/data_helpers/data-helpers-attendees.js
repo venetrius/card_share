@@ -33,7 +33,7 @@ module.exports = function(knex){
         hash = {};
         attendee.wants.forEach(entry => hash[entry] = entry);
         attendee.wants = Object.keys(hash);
-        cb(null, attendees);
+        cb(null, attendee);
       }
     );
   }
