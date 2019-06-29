@@ -13,7 +13,7 @@ class BusinessCard extends Component {
 
   render(){
     const attendee = this.props.attendee;
-
+    
     function cardHeader() {
       if (attendee.first_name) {
         return (
@@ -28,6 +28,7 @@ class BusinessCard extends Component {
     }
 
     return (
+      
       <Card>
         {cardHeader()}
         <Card.Body>
@@ -37,7 +38,7 @@ class BusinessCard extends Component {
                 <Image src="https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png" rounded width={120} height={120} alt="120x120"/>
               </Col>
               <Col xs={8} md={8}>
-                <CardInterests attendee={attendee}/>
+                <CardInterests attendee={attendee} subCategories={this.props.subCategories}/>
               </Col>
             </Row>
           </Container>

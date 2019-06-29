@@ -15,7 +15,8 @@ class NetworkPage extends Component {
             <BusinessCard
             attendee={attendees[attendee_key]}
             key={ attendees[attendee_key].id }
-            actions={this.props.actions}/>
+            actions={this.props.actions}
+            subCategories={this.props.subCategories}/>
           ))}
 
         </CardDeck>

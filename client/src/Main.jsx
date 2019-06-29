@@ -8,9 +8,7 @@ import Contacts from './Pages/Contacts/Contacts.jsx';
 
 class Main extends Component {
   render(){
-    console.log("Logging from Main: ", this.props.profile)
-    return (
-    
+    return (    
       <main style={{ minHeight: '70vh' }}>
         <Switch>
           {/* <Route exact path="/" component={Home} /> */}
@@ -18,7 +16,7 @@ class Main extends Component {
             <ProfilePage {...routeProps} categories={this.props.categories} subCategories={this.props.subCategories} profile={this.props.profile}/>
           )}/>
           <Route path="/network" render={(routeProps) => (
-            <NetworkPage {...routeProps} actions={this.props.actions} attendees={this.props.attendees}/>
+            <NetworkPage {...routeProps} actions={this.props.actions} attendees={this.props.attendees} subCategories={this.props.subCategories}/>
           )}/>
           <Route path="/messages" render={(routeProps) => (
             <MessagePage {...routeProps} categories={this.props.categories} subCategories={this.props.subCategories} user={this.props.user}/>
