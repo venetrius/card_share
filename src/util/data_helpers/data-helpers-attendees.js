@@ -8,17 +8,50 @@ module.exports = function(knex){
     .asCallback(cb)
   }
 
-  function getAttendeeById(attendee_id, cb){
-    knex.select('*')
+  function getAttendeeById(attendee_id, cb) {
+    knex.select(
+      'attendees.*',
+      knex.raw('json_agg(haves.sub_category_id) as haves'),
+      knex.raw('json_agg(wants.sub_category_id) as wants')
+    )
     .from('attendees')
-    .where('id', attendee_id)
-    .first()
-    .asCallback(cb)
+    .leftJoin('haves', 'haves.attendee_id', 'attendees.id')
+    .groupByRaw('attendees.id')
+    .leftJoin('wants', 'wants.attendee_id', 'attendees.id')
+    .groupByRaw('attendees.id')
+    .where('attendees.id', attendee_id)
+
+    .asCallback(function(err, attendees) 
+      {
+        if (err) {
+          throw err;
+        }
+        const attendee = attendees[0];
+        if(! attendee){
+          return cb('not found', null);
+        }
+        let hash = {};
+        attendee.haves.forEach(entry => hash[entry] = entry);
+        attendee.haves = Object.keys(hash);
+        hash = {};
+        attendee.wants.forEach(entry => hash[entry] = entry);
+        attendee.wants = Object.keys(hash);
+        cb(null, attendee);
+      }
+    );
   }
 
   function createAttendee(profile, cb) {
     knex('attendees')
     .insert([profile])
+    .returning('*')
+    .asCallback(cb);
+  }
+
+  function updateAttendeeById(attendee_id, profile, cb){
+    knex('attendees')
+    .where('id', attendee_id)
+    .update({...profile})
     .returning('*')
     .asCallback(cb);
   }
@@ -197,7 +230,8 @@ module.exports = function(knex){
     changeCardShareStatus,
     findOrCreateAttendee,
     getRelationships,
-    getAttendeeById
+    getAttendeeById,
+    updateAttendeeById
   }  
 }
 

@@ -156,9 +156,25 @@ const loadAttendeeId = function(socket, event){
   }
   return attendeeId
 }
-/**
- * 
- */
+
+const validateProfile = function(profile){
+  const {email_adress, position, company, phone_number, photo, tagline}  = profile;
+  return {email_adress, position, company, phone_number, photo, tagline};
+}
+
+const validateInterest = function(interest){
+  let {haves, wants}  = interest;
+  if(haves.length > 5){
+    haves = haves.slice(0,5);
+  }
+  if(wants.length > 5){
+    wants = want.slice(0,5);
+  }
+  return {haves, wants};
+}
+/*****************************************************************************-
+ *                        EVENTS
+ *****************************************************************************/
 const get_categories =  function(event_id){
   const socket = this;
   dataHelpers.getCategories(event_id,function(err, categories){
@@ -222,6 +238,46 @@ const get_attendee = function() {
     socket.emit('attendee', JSON.stringify(message));
   })
 };
+
+const update_profile = function(msg) {
+  const socket = this;
+  const attendee_id = loadAttendeeId(socket, 'attendee');
+  if( ! attendee_id) {return}
+  const profile = validateProfile(JSON.parse(msg));
+  dataHelpers.updateAttendeeById(attendee_id, profile, function(err, attendee){
+    let message;
+    if(err || ! attendee){
+      console.log('error in update_profile', err)
+      message = {error : 'error please try again later'};
+    }else{
+      message = attendee;
+    }
+    socket.emit('attendee', JSON.stringify(message));
+  })
+};
+
+const update_interests = function(msg) {
+  console.log('received', msg)
+  const socket = this;
+  const attendee_id = loadAttendeeId(socket, 'attendee');
+  if( ! attendee_id) {return}
+  const interests = validateInterest(JSON.parse(msg));
+  dataHelpers.updateInterestsById(attendee_id, interests, function(err, updatedInterests){
+    let message;
+    if(err || ! updatedInterests){
+      console.log('error in update_interests', err)
+      message = {error : 'error please try again later'};
+    }else{
+      const haves = updatedInterests.haves.map(haveObj => haveObj.sub_category_id)
+      const wants = updatedInterests.wants.map(wantObj => wantObj.sub_category_id)
+      message = { haves, wants}
+      console.log("Message: ", message)
+    }
+    socket.emit('attendee_interests', JSON.stringify(message));
+  })
+};
+
+
 
 // ----------------------------------------------
 //              CARD EVENTS
@@ -314,6 +370,8 @@ const delete_card = function(incoming_message){
     send_card,
     save_card,
     delete_card,
-    get_attendee
+    get_attendee,
+    update_profile,
+    update_interests
   };
 }
