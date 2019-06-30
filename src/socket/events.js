@@ -6,6 +6,11 @@ module.exports = function (io, model){
 /********************
  * HELPER FUNCTIONS *
  ********************/
+const getBasicProfile = function(attendee){
+  const {id, tagline} = attendee;
+  return {id, tagline};
+}
+
 const applyConnection = function (connection, attendee_id, attendeesMap){
   const isISent = connection.requester_id === attendee_id;
   if(isISent){
@@ -247,10 +252,10 @@ const update_profile = function(msg) {
   dataHelpers.updateAttendeeById(attendee_id, profile, function(err, attendee){
     let message;
     if(err || ! attendee){
-      console.log('error in update_profile', err)
       message = {error : 'error please try again later'};
     }else{
       message = attendee;
+      model.broadcast(io, 'broadcast_attendee', getBasicProfile(attendee[0]), attendee.id);
     }
     socket.emit('attendee', JSON.stringify(message));
   })
@@ -271,6 +276,7 @@ const update_interests = function(msg) {
       const haves = updatedInterests.haves.map(haveObj => haveObj.sub_category_id)
       const wants = updatedInterests.wants.map(wantObj => wantObj.sub_category_id)
       message = { haves, wants}
+      model.broadcast(io, 'broadcast_interests', {...message, id : attendee_id}, attendee_id);
       console.log("Message: ", message)
     }
     socket.emit('attendee_interests', JSON.stringify(message));

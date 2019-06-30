@@ -25,5 +25,13 @@ Model.prototype.retriveUser = function(userId){
   return this.user_connection[userId];
 }
 
+Model.prototype.broadcast = function(io, messageType, message, exception){
+  Object.keys(this.connection_user).forEach(function(targetSocketID){
+    if(targetSocketID !== exception){
+      io.in(targetSocketID).emit(messageType, JSON.stringify(message));
+    }
+  });
+}
+
 
 module.exports = new Model();
