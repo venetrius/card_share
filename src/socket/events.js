@@ -276,6 +276,7 @@ const update_interests = function(msg) {
       const haves = updatedInterests.haves.map(haveObj => haveObj.sub_category_id)
       const wants = updatedInterests.wants.map(wantObj => wantObj.sub_category_id)
       message = { haves, wants}
+      model.broadcast(io, 'broadcast_interests', {...message, id : attendee_id}, attendee_id);
       console.log("Message: ", message)
     }
     socket.emit('attendee_interests', JSON.stringify(message));
