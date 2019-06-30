@@ -7,6 +7,13 @@ module.exports = function(knex){
     .andWhere('event_id', event_id)
     .asCallback(cb)
   }
+  function getAttendeeConnectInfoByIds(ids, cb){
+    knex.select('id' , 'photo', 'first_name')
+    .from('attendees')
+    .where('id', ids[0])
+    .orWhere('id', ids[1])
+    .asCallback(cb)
+  }
 
   function getAttendeeById(attendee_id, cb) {
     knex.select(
@@ -231,7 +238,8 @@ module.exports = function(knex){
     findOrCreateAttendee,
     getRelationships,
     getAttendeeById,
-    updateAttendeeById
+    updateAttendeeById,
+    getAttendeeConnectInfoByIds
   }  
 }
 

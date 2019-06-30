@@ -102,23 +102,36 @@ const filterProfiles = function(attendee_id, attendees, relationships){
   return attendeesMap;
 }
 
-const getConnectionChangeCb = function(socket, requester_id, isToForward){
+const getConnectionChangeCb = function(socket, requester_id, isConnected){
   const connectionChangeCb = function(err, list){
     let message;
     if(err){
       message = {error : 'error please try again later'};
+      socket.emit('connection_change', JSON.stringify(message));
     }else{
       if(!list || list.length == 0){
         message = {error : 'There is no pending connection between the client and ' + requester_id};
+        socket.emit('connection_change', JSON.stringify(message));
       }
       else{
         message = list[0];
+        if(isConnected){    
+          dataHelpers.getAttendeeConnectInfoByIds([requester_id, message.responder_id], function(error, profiles){
+            if(error || !profiles || profiles.length !== 2){
+              socket.emit('do', 'RECONNECT');
+              sendNotificationIfOnline(requester_id, 'do', 'RECONNECT');
+            }else{
+              socket.emit('connection_change', JSON.stringify(message));
+              sendNotificationIfOnline(requester_id, 'connection_change', message);
+              socket.emit('update_to_connected', JSON.stringify(profiles.filter(profile => profile.id !== message.responder_id)[0]));
+              sendNotificationIfOnline(requester_id, 'update_to_connected',
+                   profiles.filter(profile => profile.id === message.responder_id)[0]);
+            }
+          })
+        }
       }
     }
-    if(isToForward){
-      sendNotificationIfOnline(requester_id, 'connection_change', message);
-    }
-    socket.emit('connection_change', JSON.stringify(message));
+
   }
   return connectionChangeCb;
 }
