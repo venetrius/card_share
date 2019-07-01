@@ -394,6 +394,7 @@ const delete_card = function(incoming_message){
   dataHelpers.createMessage(message, 
     function(err, messageObj){
       if(err){
+        console.log('message error', err);
         socket.emit('error_message', 'while createing message: ' + incoming_message);
       }else{
         socket.emit('message_sent', JSON.stringify(messageObj))
