@@ -65,6 +65,20 @@ exports.up = function(knex, Promise) {
     table.string('status', 10).notNullable()
   })
 
+  .createTable('messages', function (table) {
+    table.increments('id').primary()
+    table.integer('sender_id')
+    table.foreign('sender_id').references('attendees.id').onDelete('CASCADE')
+    table.integer('receiver_id')
+    table.foreign('receiver_id').references('attendees.id').onDelete('CASCADE')
+    table.integer('event_id')
+    table.foreign('event_id').references('events.id').onDelete('CASCADE')
+    table.string('content', 255).notNullable()
+    table.string('status', 10).notNullable()
+    table.timestamp('end').notNullable()
+    table.timestamp('created_at').defaultTo(knex.fn.now())
+  })
+
   .createTable('connections', function (table) {
     table.increments('id').primary()
     table.integer('requester_id')
