@@ -7,8 +7,8 @@ module.exports = function (io, model){
  * HELPER FUNCTIONS *
  ********************/
 const getBasicProfile = function(attendee){
-  const {id, tagline} = attendee;
-  return {id, tagline};
+  const {id, tagline, haves, wants} = attendee;
+  return {id, tagline, haves, wants};
 }
 
 const applyConnection = function (connection, attendee_id, attendeesMap){
@@ -267,10 +267,14 @@ const update_profile = function(msg) {
     if(err || ! attendee){
       message = {error : 'error please try again later'};
     }else{
+      attendee = attendee[0];
+      attendee.wants = attendee.wants || [];
+      attendee.haves = attendee.haves || [];
       message = attendee;
-      model.broadcast(io, 'broadcast_attendee', getBasicProfile(attendee[0]), attendee.id);
+      model.broadcast(io, 'broadcast_attendee', getBasicProfile(attendee), attendee.id);
     }
-    socket.emit('attendee', JSON.stringify(message));
+
+    socket.emit('update_attendee', JSON.stringify(message));
   })
 };
 
