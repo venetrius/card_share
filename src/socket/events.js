@@ -159,7 +159,7 @@ const sendNotificationIfOnline = function(attendeeID, messageType, message){
   const targetSocketID = model.retriveUser(attendeeID);
   if(targetSocketID && message && ! message.error){
     if(io.in(targetSocketID)){
-      io.in(targetSocketID).emit(messageType, JSON.stringify(message));
+      io.in(targetSocketID).emit(messageType, JSON.stringify({...message, isNotification : true}));
     }
   }
 }
