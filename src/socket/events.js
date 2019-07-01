@@ -7,8 +7,8 @@ module.exports = function (io, model){
  * HELPER FUNCTIONS *
  ********************/
 const getBasicProfile = function(attendee){
-  const {id, tagline} = attendee;
-  return {id, tagline};
+  const {id, tagline, haves, wants} = attendee;
+  return {id, tagline, haves, wants};
 }
 
 const applyConnection = function (connection, attendee_id, attendeesMap){
@@ -102,23 +102,36 @@ const filterProfiles = function(attendee_id, attendees, relationships){
   return attendeesMap;
 }
 
-const getConnectionChangeCb = function(socket, requester_id, isToForward){
+const getConnectionChangeCb = function(socket, requester_id, isConnected){
   const connectionChangeCb = function(err, list){
     let message;
     if(err){
       message = {error : 'error please try again later'};
+      socket.emit('connection_change', JSON.stringify(message));
     }else{
       if(!list || list.length == 0){
         message = {error : 'There is no pending connection between the client and ' + requester_id};
+        socket.emit('connection_change', JSON.stringify(message));
       }
       else{
         message = list[0];
+        if(isConnected){    
+          dataHelpers.getAttendeeConnectInfoByIds([requester_id, message.responder_id], function(error, profiles){
+            if(error || !profiles || profiles.length !== 2){
+              socket.emit('do', 'RECONNECT');
+              sendNotificationIfOnline(requester_id, 'do', 'RECONNECT');
+            }else{
+              socket.emit('connection_change', JSON.stringify(message));
+              sendNotificationIfOnline(requester_id, 'connection_change', message);
+              socket.emit('update_to_connected', JSON.stringify(profiles.filter(profile => profile.id !== message.responder_id)[0]));
+              sendNotificationIfOnline(requester_id, 'update_to_connected',
+                   profiles.filter(profile => profile.id === message.responder_id)[0]);
+            }
+          })
+        }
       }
     }
-    if(isToForward){
-      sendNotificationIfOnline(requester_id, 'connection_change', message);
-    }
-    socket.emit('connection_change', JSON.stringify(message));
+
   }
   return connectionChangeCb;
 }
@@ -254,10 +267,14 @@ const update_profile = function(msg) {
     if(err || ! attendee){
       message = {error : 'error please try again later'};
     }else{
+      attendee = attendee[0];
+      attendee.wants = attendee.wants || [];
+      attendee.haves = attendee.haves || [];
       message = attendee;
-      model.broadcast(io, 'broadcast_attendee', getBasicProfile(attendee[0]), attendee.id);
+      model.broadcast(io, 'broadcast_attendee', getBasicProfile(attendee), attendee.id);
     }
-    socket.emit('attendee', JSON.stringify(message));
+
+    socket.emit('update_attendee', JSON.stringify(message));
   })
 };
 
@@ -341,6 +358,14 @@ const send_card = function(message){
     }
     sendNotificationIfOnline(receiver_id, 'cardshare_change', message);
     socket.emit('cardshare_change', JSON.stringify(message));
+    dataHelpers.getAttendeeById(sender_id, function(err, attendee){
+      if(err){
+        sendNotificationIfOnline(requester_id, 'do', 'RECONNECT'); 
+      }else{
+      delete attendee.user_id
+      sendNotificationIfOnline(receiver_id, 'update_to_card_shared', attendee);
+      }
+    })
   })
 };
 
