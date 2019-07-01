@@ -381,7 +381,27 @@ const delete_card = function(incoming_message){
   dataHelpers.changeCardShareStatus(sender_id, receiver_id, 'DISCARDED', getCardShareChangeCb(socket, sender_id))
 };
 
+/************************************************
+ *              Message Event                   *
+ ***********************************************/
 
+ const send_message = function(incoming_message){
+  const socket = this;
+  const sender_id = loadAttendeeId(socket, 'message_sent');
+  if( ! sender_id) {return}
+  const message = JSON.parse(incoming_message);
+  message.sender_id =  sender_id;
+  dataHelpers.createMessage(message, 
+    function(err, messageObj){
+      if(err){
+        socket.emit('error_message', 'while createing message: ' + incoming_message);
+      }else{
+        socket.emit('message_sent', JSON.stringify(messageObj))
+        sendNotificationIfOnline(messageObj.receiver_id, 'message_incoming', messageObj);
+      }
+    }
+  );
+};
 
 // ----------------------------------------------
 //              Exports Module
@@ -399,6 +419,7 @@ const delete_card = function(incoming_message){
     delete_card,
     get_attendee,
     update_profile,
-    update_interests
+    update_interests,
+    send_message
   };
 }
