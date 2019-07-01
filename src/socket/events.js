@@ -354,6 +354,14 @@ const send_card = function(message){
     }
     sendNotificationIfOnline(receiver_id, 'cardshare_change', message);
     socket.emit('cardshare_change', JSON.stringify(message));
+    dataHelpers.getAttendeeById(sender_id, function(err, attendee){
+      if(err){
+        sendNotificationIfOnline(requester_id, 'do', 'RECONNECT'); 
+      }else{
+      delete attendee.user_id
+      sendNotificationIfOnline(receiver_id, 'update_to_card_shared', attendee);
+      }
+    })
   })
 };
 
