@@ -181,12 +181,13 @@ const validateProfile = function(profile){
 }
 
 const validateInterest = function(interest){
+  console.log('validateInterest',interest)
   let {haves, wants}  = interest;
   if(haves.length > 5){
     haves = haves.slice(0,5);
   }
   if(wants.length > 5){
-    wants = want.slice(0,5);
+    wants = wants.slice(0,5);
   }
   return {haves, wants};
 }
