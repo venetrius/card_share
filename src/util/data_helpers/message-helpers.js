@@ -1,4 +1,4 @@
-const isValiedMessage = function(message){
+const isValidMessage = function(message){
   const {sender_id, receiver_id, event_id,  content} =  message;
   return (
     !isNaN(sender_id) &&
@@ -30,7 +30,7 @@ module.exports = function(knex){
   }
 
   function createMessage(message, cb) {
-   if( !isValiedMessage(message)){
+   if( !isValidMessage(message)){
       return cb('not a valid message', null);
     }
     message.status = 'SENT'
@@ -52,9 +52,16 @@ module.exports = function(knex){
     })
   }
 
-
+  function getMessagesByAttendeeId(attendee_id, cb){
+      knex.select('*')
+      .from('messages')
+      .where('sender_id', attendee_id)
+      .orWhere('receiver_id', attendee_id) 
+      .asCallback(cb)
+    }
 
   return {
-    createMessage
+    createMessage,
+    getMessagesByAttendeeId
   }  
 }
