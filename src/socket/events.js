@@ -176,7 +176,8 @@ const loadAttendeeId = function(socket, event){
 }
 
 const validateProfile = function(profile){
-  const {email_adress, position, company, phone_number, photo, tagline}  = profile;
+  const {email_adress, position, company, phone_number, photo}  = profile;
+  const tagline = profile.tagline || 'I am too here to have a good time';
   return {email_adress, position, company, phone_number, photo, tagline};
 }
 
