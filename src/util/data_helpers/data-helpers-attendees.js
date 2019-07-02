@@ -128,10 +128,10 @@ module.exports = function(knex){
         for(let attendee of attendees){
           let hash = {};
           attendee.haves.forEach(entry => hash[entry] = entry);
-          attendee.haves = Object.keys(hash);
+          attendee.haves = Object.keys(hash).filter(have => have !== "null");
           hash = {};
           attendee.wants.forEach(entry => hash[entry] = entry);
-          attendee.wants = Object.keys(hash);
+          attendee.wants = Object.keys(hash).filter(have => have !== "null");
         }
         cb(null, attendees)
       }
