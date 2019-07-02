@@ -417,6 +417,22 @@ const delete_card = function(incoming_message){
   );
 };
 
+const load_messages = function(){
+  const socket = this;
+  const attendee_id = loadAttendeeId(socket, 'connection_change');
+  if( ! attendee_id) {return}
+  dataHelpers.getMessagesByAttendeeId(attendee_id, function(err, messages)
+    {
+      if(err){
+        console.log('load_messages', err);
+        socket.emit('error_message', 'while loading messages');
+      }else{
+        socket.emit('messages_load', JSON.stringify(messages));
+      }
+    }
+  )
+}
+
 // ----------------------------------------------
 //              Exports Module
 // ----------------------------------------------
@@ -434,6 +450,7 @@ const delete_card = function(incoming_message){
     get_attendee,
     update_profile,
     update_interests,
-    send_message
+    send_message,
+    load_messages
   };
 }
