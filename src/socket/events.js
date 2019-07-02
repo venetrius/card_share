@@ -284,14 +284,19 @@ const update_interests = function(msg) {
   const attendee_id = loadAttendeeId(socket, 'attendee');
   if( ! attendee_id) {return}
   const interests = validateInterest(JSON.parse(msg));
+  if(! (interests.wants.length || interests.haves.length)){
+    socket.emit(msg);
+    return;
+  }
   dataHelpers.updateInterestsById(attendee_id, interests, function(err, updatedInterests){
     let message;
     if(err || ! updatedInterests){
       console.log('error in update_interests', err)
       message = {error : 'error please try again later'};
     }else{
-      const haves = updatedInterests.haves.map(haveObj => haveObj.sub_category_id)
-      const wants = updatedInterests.wants.map(wantObj => wantObj.sub_category_id)
+      console.log('updatedInterests', updatedInterests)
+      const haves = updatedInterests.haves ? updatedInterests.haves.map(haveObj => haveObj.sub_category_id) : [];
+      const wants = updatedInterests.wants ? updatedInterests.wants.map(wantObj => wantObj.sub_category_id) : [];
       message = { haves, wants}
       model.broadcast(io, 'broadcast_interests', {...message, id : attendee_id}, attendee_id);
       console.log("Message: ", message)

@@ -27,25 +27,35 @@ module.exports = function(knex){
     );
   }
 
+  function addInterests(attendee_id, table, interests, cb){
+    knex(table).insert(interests)
+    .returning('*')
+    .asCallback(cb)
+  }
 
   function updateInterestsById(attendee_id, interests, cb) {
-    knex('haves').insert(interests.haves.map(have => {return {attendee_id : attendee_id, sub_category_id : have}}))
-    .returning('*')
-    .asCallback(function(err, haves){
-      if(err){
-        cb(err, null)
-      }else{
-        knex('wants').insert(interests.wants.map(want => {return {attendee_id : attendee_id, sub_category_id : want}}))
-        .returning('*')
-        .asCallback(function(err, wants){
-          if(err){
-            cb(err, null)
-          }else{
-            cb(null, {haves, wants})
+    const haveObjs = interests.haves.map(have => {return {attendee_id : attendee_id, sub_category_id : have}});
+    const wantObjs = interests.wants.map(want => {return {attendee_id : attendee_id, sub_category_id : want}});
+    if(haveObjs.length > 0){
+      if(wantObjs.length > 0){
+        addInterests(attendee_id, 'haves', haveObjs,
+          function(err, haves){
+            if(err){
+              return cb(err, null);
+            }
+            addInterests(attendee_id, 'wants', wantObjs, 
+              function(err, wants){
+                cb(err, {haves, wants});
+              }
+            );
           }
-        });
+        )
+      }else{
+        addInterests(attendee_id, 'haves', haveObjs, ((err, haves) => cb(err, {haves : haves, wants : []})));
       }
-    });
+    }else{
+      addInterests(attendee_id, 'wants', haveObjs, ((err, wants) => cb(err, {haves : [], wants : wants})) );
+    }
   }
 
 
