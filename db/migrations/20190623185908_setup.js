@@ -124,6 +124,7 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return knex.schema
+  .dropTable('messages')
   .dropTable('haves')
   .dropTable('wants') 
   .dropTable('sub_categories')
