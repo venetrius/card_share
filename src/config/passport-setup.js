@@ -33,7 +33,7 @@ const setUpLinkedinPassport = function (dataHelpersParam) {
       // options for google strategy
       clientID: process.env.LINKEDIN_CLIENT_ID,
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-      callbackURL: 'http://127.0.0.1:8081/auth/linkedin/callback',
+      callbackURL: process.env.CALLBACK_URL,
       scope: ['r_emailaddress', 'r_liteprofile']
     }, (accessToken, refreshToken, profile, done) => {
       // passport callback function
