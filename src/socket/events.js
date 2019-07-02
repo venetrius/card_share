@@ -106,6 +106,7 @@ const getConnectionChangeCb = function(socket, requester_id, isConnected){
   const connectionChangeCb = function(err, list){
     let message;
     if(err){
+      console.log("error", error)
       message = {error : 'error please try again later'};
       socket.emit('connection_change', JSON.stringify(message));
     }else{
@@ -267,6 +268,7 @@ const update_profile = function(msg) {
   dataHelpers.updateAttendeeById(attendee_id, profile, function(err, attendee){
     let message;
     if(err || ! attendee){
+      console.log('error in update profile error:', err, 'attendee:', attendee, 'messgae in ', msg)
       message = {error : 'error please try again later'};
     }else{
       attendee = attendee[0];
