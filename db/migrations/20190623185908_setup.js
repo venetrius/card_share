@@ -75,7 +75,6 @@ exports.up = function(knex, Promise) {
     table.foreign('event_id').references('events.id').onDelete('CASCADE')
     table.string('content', 255).notNullable()
     table.string('status', 10).notNullable()
-    table.timestamp('end').notNullable()
     table.timestamp('created_at').defaultTo(knex.fn.now())
   })
 
