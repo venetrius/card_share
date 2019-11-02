@@ -1,3 +1,5 @@
+Front end repo: https://github.com/BJorgen/card_share_client
+
 ## Database Setup
 
 1. Set up a pg database
